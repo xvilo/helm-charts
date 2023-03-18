@@ -12,7 +12,7 @@ image:
   php:
     repository: xvilo/php
     pullPolicy: IfNotPresent
-    tag: latest
+    tag: 8.2-fpm
 
 imagePullSecrets: []
 nameOverride: ""

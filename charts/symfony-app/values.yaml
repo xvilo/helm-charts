@@ -5,10 +5,14 @@
 replicaCount: 1
 
 image:
-  repository: nginx
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  nginx:
+    repository: nginx
+    pullPolicy: IfNotPresent
+    tag: "1.23"
+  php:
+    repository: xvilo/php
+    pullPolicy: IfNotPresent
+    tag: latest
 
 imagePullSecrets: []
 nameOverride: ""

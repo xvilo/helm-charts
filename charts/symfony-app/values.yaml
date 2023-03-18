@@ -41,8 +41,12 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: ClusterIP
-  port: 80
+  nginx:
+    type: ClusterIP
+    port: 80
+  fpm:
+    type: ClusterIP
+    port: 9000
 
 ingress:
   enabled: false

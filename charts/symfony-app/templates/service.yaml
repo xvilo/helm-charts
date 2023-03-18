@@ -5,9 +5,9 @@ metadata:
   labels:
     {{- include "symfony-app.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ .Values.service.nginx.type }}
   ports:
-    - port: {{ .Values.service.port }}
+    - port: {{ .Values.service.nginx.port }}
       targetPort: http
       protocol: TCP
       name: http

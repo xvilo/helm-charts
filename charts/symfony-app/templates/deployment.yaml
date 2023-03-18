@@ -28,14 +28,14 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ include "symfony-app.fullname" . }}-nginx
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.nginx.repository }}:{{ .Values.image.nginx.tag }}"
           imagePullPolicy: {{ .Values.image.nginx.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.service.port }}
+              containerPort: {{ .Values.service.nginx.port }}
               protocol: TCP
           livenessProbe:
             httpGet:
@@ -45,6 +45,23 @@ spec:
             httpGet:
               path: /
               port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+        - name: {{ include "symfony-app.fullname" . }}-php
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.php.repository }}:{{ .Values.image.php.tag }}"
+          imagePullPolicy: {{ .Values.image.php.pullPolicy }}
+          ports:
+            - name: fpm
+              containerPort: {{ .Values.service.fpm.port }}
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: fpm
+          readinessProbe:
+            tcpSocket:
+              port: fpm
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

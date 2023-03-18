@@ -33,6 +33,7 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.nginx.repository }}:{{ .Values.image.nginx.tag }}"
           imagePullPolicy: {{ .Values.image.nginx.pullPolicy }}
+          workingDir: /app
           ports:
             - name: http
               containerPort: {{ .Values.service.nginx.port }}
@@ -47,11 +48,15 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: app-directory
+              mountPath: /app
         - name: {{ include "symfony-app.fullname" . }}-php
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.php.repository }}:{{ .Values.image.php.tag }}"
-          imagePullPolicy: {{ .Values.image.php.pullPolicy }}
+          image: "{{ .Values.image.fpm.repository }}:{{ .Values.image.fpm.tag }}"
+          imagePullPolicy: {{ .Values.image.fpm.pullPolicy }}
+          workingDir: /app
           ports:
             - name: fpm
               containerPort: {{ .Values.service.fpm.port }}
@@ -64,6 +69,27 @@ spec:
               port: fpm
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: app-directory
+              mountPath: /app
+      initContainers:
+        - name: init-fetch-code
+          image: "{{ .Values.image.git.repository }}:{{ .Values.image.git.tag }}"
+          workingDir: /app
+          env:
+            - name: GIT_SSH_COMMAND
+              value: "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -vvvvv"
+          volumeMounts:
+            - name: app-directory
+              mountPath: /app
+          command: [ 'sh', '-c', "git clone --depth 1 --branch {{ .Values.appVersion }} {{ .Values.appSource }} /app" ]
+        - name: dependencies-composer
+          image: "{{ .Values.image.php.repository }}:{{ .Values.image.php.tag }}"
+          workingDir: /app
+          volumeMounts:
+            - name: app-directory
+              mountPath: /app
+          command: [ 'sh', '-c', "composer install  --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --optimize-autoloader --optimize-autoloader" ]
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -76,3 +102,6 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+        - name: app-directory
+          emptyDir: {}

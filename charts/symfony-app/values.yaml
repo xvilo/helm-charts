@@ -9,10 +9,23 @@ image:
     repository: nginx
     pullPolicy: IfNotPresent
     tag: "1.23"
-  php:
+  fpm:
     repository: xvilo/php
     pullPolicy: IfNotPresent
     tag: 8.2-fpm
+  php:
+    repository: xvilo/php
+    pullPolicy: IfNotPresent
+    tag: 8.2-composer
+  git:
+    repository: alpine/git
+    pullPolicy: IfNotPresent
+    tag: 2.36.3
+
+##
+# Only https sources are supported
+appSource: https://github.com/symfony/demo.git
+appVersion: v2.2.3
 
 imagePullSecrets: []
 nameOverride: ""

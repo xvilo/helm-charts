@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   symfony-app:
   - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2023-03-18T17:23:29.381474589Z"
+    description: A Helm chart for Kubernetes
+    digest: d00cb6db27047c64006e62293410a9f47e4bc32e3ec4dae2902c64a8c6f632cf
+    name: symfony-app
+    type: application
+    urls:
+    - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.1.1/symfony-app-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     appVersion: 1.16.0
     created: "2023-03-18T11:40:02.681719548Z"
     description: A Helm chart for Kubernetes
@@ -11,4 +21,4 @@ entries:
     urls:
     - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.1.0/symfony-app-0.1.0.tgz
     version: 0.1.0
-generated: "2023-03-18T11:40:02.681725648Z"
+generated: "2023-03-18T17:23:29.381485789Z"

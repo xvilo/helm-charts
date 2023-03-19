@@ -64,9 +64,10 @@ spec:
               mountPath: /app
       initContainers:
         - name: init-fetch-code
-          image: "{{ .Values.image.git.repository }}:{{ .Values.image.git.tag }}"
+          image: {{ (printf "%s:%s" $.Values.image.git.repository $.Values.image.git.tag) | quote }}
           workingDir: /app
           env:
+            {{- toYaml $.Values.env | nindent 12 }}
             - name: GIT_SSH_COMMAND
               value: "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -vvvvv"
           volumeMounts:
@@ -78,12 +79,27 @@ spec:
         - name: dependencies-composer
           image: "{{ .Values.image.php.repository }}:{{ .Values.image.php.tag }}"
           workingDir: /app
+          env:
+            {{- toYaml .Values.env | nindent 12 }}
           volumeMounts:
             - name: app-directory
               mountPath: /app
           command: [ 'sh', '-c', "composer install  --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader --optimize-autoloader" ]
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
+      {{- range .Values.initContainers }}
+        - name: {{ .name }}
+          image: {{ .image | default (printf "%s:%s" $.Values.image.php.repository $.Values.image.php.tag) | quote }}
+          workingDir: /app
+          env:
+            {{- toYaml $.Values.env | nindent 12 }}
+          volumeMounts:
+            - name: app-directory
+              mountPath: /app
+          command: [ 'sh', '-c', {{ .command | quote }} ]
+          securityContext:
+            {{- toYaml $.Values.securityContext | nindent 12 }}
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -107,9 +107,9 @@ verboseLogging: false
 
 env:
   - name: APP_ENV
-    value: prod
+    value: "prod"
   - name: APP_DEBUG
-    value: 0
+    value: "0"
 
 probes:
   nginx:
@@ -144,3 +144,7 @@ nginxConfig:
     '}';
   serverSnippet: >-
     # Add extra server snippet through values.
+
+initContainers: {}
+#  - name: reload-fixtures
+#    command: 'php bin/console doctrine:fixtures:load'

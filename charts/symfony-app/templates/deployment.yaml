@@ -30,8 +30,6 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ include "symfony-app.fullname" . }}-nginx
-#          securityContext:
-#            {- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.nginx.repository }}:{{ .Values.image.nginx.tag }}"
           imagePullPolicy: {{ .Values.image.nginx.pullPolicy }}
           workingDir: /app
@@ -39,14 +37,7 @@ spec:
             - name: http
               containerPort: {{ .Values.service.nginx.port }}
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
+          {{- toYaml .Values.probes.nginx | nindent 10 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
@@ -65,12 +56,7 @@ spec:
             - name: fpm
               containerPort: {{ .Values.service.fpm.port }}
               protocol: TCP
-          livenessProbe:
-            tcpSocket:
-              port: fpm
-          readinessProbe:
-            tcpSocket:
-              port: fpm
+          {{- toYaml .Values.probes.fpm | nindent 10 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:

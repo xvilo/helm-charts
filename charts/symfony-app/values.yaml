@@ -105,6 +105,24 @@ affinity: {}
 
 verboseLogging: false
 
+probes:
+  nginx:
+    livenessProbe:
+      httpGet:
+        path: /
+        port: http
+    readinessProbe:
+      httpGet:
+        path: /
+        port: http
+  fpm:
+    livenessProbe:
+      tcpSocket:
+        port: fpm
+    readinessProbe:
+      tcpSocket:
+        port: fpm
+
 nginxConfig:
   logFormat: |-
     escape=json '{'

@@ -105,6 +105,12 @@ affinity: {}
 
 verboseLogging: false
 
+env:
+  - name: APP_ENV
+    value: prod
+  - name: APP_DEBUG
+    value: 0
+
 probes:
   nginx:
     livenessProbe:
@@ -136,5 +142,5 @@ nginxConfig:
       '"http_referrer":"$http_referer",'
       '"http_user_agent":"$http_user_agent"'
     '}';
-  httpSnippet: >-
-    # Add extra http snippet
+  serverSnippet: >-
+    # Add extra server snippet through values.

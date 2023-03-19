@@ -15,6 +15,7 @@ spec:
     metadata:
       {{- with .Values.podAnnotations }}
       annotations:
+        checksum/nginx: {{ include (print $.Template.BasePath "/nginx-configmap.yaml") . | sha256sum }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
@@ -29,8 +30,8 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ include "symfony-app.fullname" . }}-nginx
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
+#          securityContext:
+#            {- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.nginx.repository }}:{{ .Values.image.nginx.tag }}"
           imagePullPolicy: {{ .Values.image.nginx.pullPolicy }}
           workingDir: /app
@@ -51,6 +52,9 @@ spec:
           volumeMounts:
             - name: app-directory
               mountPath: /app
+            - name: nginx-config
+              mountPath: /etc/nginx/conf.d/
+              readOnly: true
         - name: {{ include "symfony-app.fullname" . }}-php
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
@@ -83,13 +87,17 @@ spec:
             - name: app-directory
               mountPath: /app
           command: [ 'sh', '-c', "git clone --depth 1 --branch {{ .Values.appVersion }} {{ .Values.appSource }} /app" ]
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
         - name: dependencies-composer
           image: "{{ .Values.image.php.repository }}:{{ .Values.image.php.tag }}"
           workingDir: /app
           volumeMounts:
             - name: app-directory
               mountPath: /app
-          command: [ 'sh', '-c', "composer install  --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --optimize-autoloader --optimize-autoloader" ]
+          command: [ 'sh', '-c', "composer install  --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader --optimize-autoloader" ]
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -103,5 +111,8 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
+        - name: nginx-config
+          configMap:
+            name: {{ template "symfony-app.fullname" . }}-nginx-config
         - name: app-directory
           emptyDir: {}

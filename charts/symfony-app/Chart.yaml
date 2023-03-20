@@ -22,5 +22,7 @@ annotations:
       description: "Add Pyroscope support, enabled and configure through the values file."
     - kind: changed
       description: "Update the chart.yaml file to add more configs."
+    - kind: changed
+      description: "Update the source configuration to use .Chart.appVersion as fallback"
     - kind: fixed
       description: "Uniformly add environment variables to all containers."

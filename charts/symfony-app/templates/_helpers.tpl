@@ -60,3 +60,21 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Get the pod env variables
+*/}}
+{{- define "symfony-app.env" -}}
+env:
+{{- toYaml .Values.env | nindent 2 }}
+  - name: GIT_SSH_COMMAND
+    value: "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -vvvvv"
+  {{- if .Values.pyroscope.config.server }}
+  - name: PYROSCOPE_SERVER_ADDRESS
+    value: "{{ .Values.pyroscope.config.server }}"
+  {{ end }}
+  {{- if .Values.pyroscope.enabled }}
+  - name: PYROSCOPE_APPLICATION_NAME
+    value: "{{- default (include "symfony-app.fullname" .) .Values.pyroscope.config.name }}"
+  {{ end }}
+{{- end }}

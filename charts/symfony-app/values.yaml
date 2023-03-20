@@ -145,6 +145,12 @@ nginxConfig:
   serverSnippet: >-
     # Add extra server snippet through values.
 
+pyroscope:
+    enabled: false
+    config:
+      name: '' # PYROSCOPE_APPLICATION_NAME
+      server: '' # PYROSCOPE_SERVER_ADDRESS
+
 initContainers: {}
 #  - name: reload-fixtures
 #    command: 'php bin/console doctrine:fixtures:load'

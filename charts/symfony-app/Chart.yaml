@@ -16,13 +16,5 @@ maintainers:
 annotations:
   # Supported kind: added, changed, deprecated, removed, fixed and security
   artifacthub.io/changes: |
-    - kind: added
-      description: "Ability add custom init containers through values file."
-    - kind: added
-      description: "Add Pyroscope support, enabled and configure through the values file."
-    - kind: changed
-      description: "Update the chart.yaml file to add more configs."
-    - kind: changed
-      description: "Update the source configuration to use .Chart.appVersion as fallback"
     - kind: fixed
-      description: "Uniformly add environment variables to all containers."
+      description: "Correctly add pod annotations with values override if none are supplied"

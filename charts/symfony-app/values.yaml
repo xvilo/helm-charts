@@ -29,6 +29,9 @@ source:
   remote: https://github.com/symfony/demo.git
   version: 'v2.2.3'
 
+composer:
+  autoinstall: true
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""

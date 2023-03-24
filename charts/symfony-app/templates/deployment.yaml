@@ -81,6 +81,7 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
         {{- end }}
+        {{- if .Values.composer.autoinstall }}
         - name: dependencies-composer
           image: "{{ .Values.image.php.repository }}:{{ .Values.image.php.tag }}"
           workingDir: /app
@@ -91,6 +92,7 @@ spec:
           command: [ 'sh', '-c', "composer install  --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader --optimize-autoloader" ]
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
+        {{- end }}
       {{- range .Values.initContainers }}
         - name: {{ .name }}
           image: {{ .image | default (printf "%s:%s" $.Values.image.php.repository $.Values.image.php.tag) | quote }}

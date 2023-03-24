@@ -3,6 +3,31 @@ entries:
   symfony-app:
   - annotations:
       artifacthub.io/changes: |
+        - kind: fixed
+          description: "Correctly add pod annotations with values override if none are supplied"
+        - kind: added
+          description: "An option to not run the composer install init container"
+    apiVersion: v2
+    appVersion: main
+    created: "2023-03-24T15:14:59.787487072Z"
+    description: A simple chart to deploy basic Symfony/PHP applications
+    digest: 76b196d93649723dad33a4d8a8cbb72b955f5bc3e37a0f59bea08f9701e5ce3b
+    keywords:
+    - php
+    - symfony
+    - application
+    maintainers:
+    - name: xvilo
+      url: https://github.com/xvilo
+    name: symfony-app
+    sources:
+    - https://github.com/xvilo/helm-charts/tree/main/charts/symfony-app
+    type: application
+    urls:
+    - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.2.1/symfony-app-0.2.1.tgz
+    version: 0.2.1
+  - annotations:
+      artifacthub.io/changes: |
         - kind: added
           description: "Ability add custom init containers through values file."
         - kind: added
@@ -62,4 +87,4 @@ entries:
     urls:
     - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.1.0/symfony-app-0.1.0.tgz
     version: 0.1.0
-generated: "2023-03-20T08:25:21.94032048Z"
+generated: "2023-03-24T15:14:59.787512773Z"

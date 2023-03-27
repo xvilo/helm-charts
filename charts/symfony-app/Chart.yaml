@@ -2,7 +2,7 @@ apiVersion: v2
 name: symfony-app
 description: A simple chart to deploy basic Symfony/PHP applications
 type: application
-version: 0.2.1
+version: 0.2.2
 appVersion: 'main'
 keywords:
   - php

@@ -97,7 +97,7 @@ spec:
         - name: {{ .name }}
           image: {{ .image | default (printf "%s:%s" $.Values.image.php.repository $.Values.image.php.tag) | quote }}
           workingDir: /app
-          {{- include "symfony-app.env" . | nindent 10 }}
+          {{- include "symfony-app.env" $ | nindent 10 }}
           volumeMounts:
             - name: app-directory
               mountPath: /app

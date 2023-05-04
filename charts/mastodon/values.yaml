@@ -14,6 +14,7 @@ mastodon:
   environment:
     secret_key_base:
     otp_secret: ''
+    local_https: 'false'
 
 postgresql:
   host: ''

@@ -16,3 +16,4 @@ data:
   DB_NAME: {{ .Values.postgresql.credentials.database }}
   DB_USER: {{ .Values.postgresql.credentials.username }}
   DB_PASS: {{ .Values.postgresql.credentials.password }}
+  LOCAL_HTTPS: {{ .Values.mastodon.environment.local_https | quote }}

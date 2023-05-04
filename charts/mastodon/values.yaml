@@ -15,6 +15,14 @@ mastodon:
     secret_key_base:
     otp_secret: ''
 
+postgresql:
+  host: ''
+  port: ~
+  credentials:
+    database: mastodon
+    username: mastodon
+    password: ''
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""

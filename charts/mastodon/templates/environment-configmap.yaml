@@ -11,3 +11,8 @@ data:
   {{- if not (empty .Values.mastodon.environment.secret_key_base) }}
   SECRET_KEY_BASE: {{ required "secret_key_base must be set" (.Values.mastodon.environment.secret_key_base | b64enc | quote) }}
   {{- end }}
+  DB_HOST: {{ .Values.postgresql.host }}
+  DB_PORT: {{ .Values.postgresql.port | default "5432" | quote }}
+  DB_NAME: {{ .Values.postgresql.credentials.database }}
+  DB_USER: {{ .Values.postgresql.credentials.username }}
+  DB_PASS: {{ .Values.postgresql.credentials.password }}

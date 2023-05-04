@@ -17,3 +17,9 @@ data:
   DB_USER: {{ .Values.postgresql.credentials.username }}
   DB_PASS: {{ .Values.postgresql.credentials.password }}
   LOCAL_HTTPS: {{ .Values.mastodon.environment.local_https | quote }}
+  {{- if .Values.redis.enabled }}
+  REDIS_HOST: {{template "mastodon.redis.fullname" . }}-master
+  {{- else }}
+  REDIS_HOST: {{required "When the redis chart is disabled .Values.redis.hostname is required" .Values.redis.hostname }}
+  {{- end }}
+  REDIS_PORT: {{.Values.redis.port | default "6379" | quote }}

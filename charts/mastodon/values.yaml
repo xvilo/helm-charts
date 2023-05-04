@@ -97,3 +97,6 @@ affinity: {}
 
 redis:
   enabled: true
+  hostname: ""
+  port: 6379
+  existingSecret: ""

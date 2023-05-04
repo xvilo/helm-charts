@@ -60,3 +60,18 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{- define "mastodon.redis.fullname" -}}
+{{- printf "%s-%s" .Release.Name "redis" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
+Get the redis secret.
+*/}}
+{{- define "mastodon.redis.secretName" -}}
+{{- if .Values.redis.existingSecret }}
+    {{- printf "%s" (tpl .Values.redis.existingSecret $) -}}
+{{- else -}}
+    {{- printf "%s-redis" (tpl .Release.Name $) -}}
+{{- end -}}
+{{- end -}}

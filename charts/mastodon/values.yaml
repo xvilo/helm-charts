@@ -5,10 +5,15 @@
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: ghcr.io/mastodon/mastodon
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
+
+mastodon:
+  environment:
+    secret_key_base:
+    otp_secret: ''
 
 imagePullSecrets: []
 nameOverride: ""

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mastodon.fullname" . }}-environment
+  labels:
+    {{- include "mastodon.labels" . | nindent 4 }}
+data:
+  {{- if .Values.mastodon.environment.otp_secret }}
+  OTP_SECRET: {{ required "otp_secret must be set" (.Values.mastodon.environment.otp_secret | quote) }}
+  {{- end }}
+  {{- if not (empty .Values.mastodon.environment.secret_key_base) }}
+  SECRET_KEY_BASE: {{ required "secret_key_base must be set" (.Values.mastodon.environment.secret_key_base | b64enc | quote) }}
+  {{- end }}

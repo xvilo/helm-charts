@@ -5,6 +5,7 @@ metadata:
   labels:
     {{- include "mastodon.labels" . | nindent 4 }}
 data:
+  LOCAL_DOMAIN: {{ required "Local Domain not configured. .Values.mastodon.environment.local_domain must be set." ( .Values.mastodon.environment.local_domain | quote) }}
   {{- if .Values.mastodon.environment.otp_secret }}
   OTP_SECRET: {{ required "otp_secret must be set" (.Values.mastodon.environment.otp_secret | quote) }}
   {{- end }}

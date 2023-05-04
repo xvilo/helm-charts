@@ -45,6 +45,10 @@ spec:
                 secretKeyRef:
                   name: {{ template "mastodon.redis.secretName" . }}
                   key: redis-password
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

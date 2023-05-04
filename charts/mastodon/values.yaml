@@ -15,6 +15,7 @@ mastodon:
     secret_key_base:
     otp_secret: ''
     local_https: 'false'
+    local_domain: ''
 
 postgresql:
   host: ''
@@ -52,7 +53,7 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 80
+  port: 3000
 
 ingress:
   enabled: false

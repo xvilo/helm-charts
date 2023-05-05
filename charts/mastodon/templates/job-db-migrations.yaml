@@ -27,8 +27,4 @@ spec:
             - configMapRef:
                 name: {{ include "mastodon.fullname" . }}-environment
           env:
-            - name: "REDIS_PASSWORD"
-              valueFrom:
-                secretKeyRef:
-                  name: {{ template "mastodon.redis.secretName" . }}
-                  key: redis-password
+{{ include "mastodon.redis.environmentSecrets" . | indent 12 }}

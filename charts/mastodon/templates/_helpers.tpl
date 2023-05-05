@@ -75,3 +75,14 @@ Get the redis secret.
     {{- printf "%s-redis" (tpl .Release.Name $) -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Get env secrets.
+*/}}
+{{- define "mastodon.redis.environmentSecrets" -}}
+- name: "REDIS_PASSWORD"
+  valueFrom:
+    secretKeyRef:
+      name: {{ template "mastodon.redis.secretName" . }}
+      key: redis-password
+{{- end -}}

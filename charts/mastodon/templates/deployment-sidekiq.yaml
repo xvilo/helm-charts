@@ -30,6 +30,18 @@ spec:
       serviceAccountName: {{ include "mastodon.serviceAccountName" $context }}
       securityContext:
         {{- toYaml $context.Values.podSecurityContext | nindent 8 }}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app.kubernetes.io/name
+                      operator: In
+                      values:
+                        - kube-apiserver
+                topologyKey: kubernetes.io/hostname
+              weight: 100
       containers:
         - name: {{ $context.Chart.Name }}
           securityContext:

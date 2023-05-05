@@ -8,7 +8,7 @@ metadata:
     {{- include "mastodon.labels" $context | nindent 4 }}
 spec:
   {{- if not $context.Values.autoscaling.enabled }}
-  replicas: {{ $context.Values.replicaCount }}
+  replicas: {{ .replicaCount | default 1 }}
   {{- end }}
   selector:
     matchLabels:

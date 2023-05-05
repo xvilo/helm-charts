@@ -18,15 +18,15 @@ mastodon:
     local_domain: ''
   # ~ are unconfigured values
   smtp:
-    host: smtp.mailgun.org
+    host: smtp.eu.mailgun.org
     port: 587
     username: postmaster@localhost
     password: xxxxxxxxxxxxxxxxxxx-yyyyyyyy-zzzzzzz
     from: noreply@localhost
     domain: ~
-    deliveryMethod: ~
+    deliveryMethod: smtp
     authMethod: plain
-    verifyMode: none
+    verifyMode: peer
     startTlsAuto: ~
     startTls: auto # Set to auto (default), always, or never.
     tls: ~

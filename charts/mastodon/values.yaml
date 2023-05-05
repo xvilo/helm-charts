@@ -17,6 +17,13 @@ mastodon:
     local_https: 'false'
     local_domain: ''
 
+jobs:
+  createAdmin:
+    enabled: true
+    deleteOnSuccess: true
+    username: instance_admin
+    email: admin@localhost
+
 postgresql:
   host: ''
   port: ~

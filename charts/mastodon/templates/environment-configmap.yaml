@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mastodon.fullname" . }}-environment
+  labels:
+    {{- include "mastodon.labels" . | nindent 4 }}
+data:
+  LOCAL_DOMAIN: {{ required "Local Domain not configured. .Values.mastodon.environment.local_domain must be set." ( .Values.mastodon.environment.local_domain | quote) }}
+  {{- if .Values.mastodon.environment.otp_secret }}
+  OTP_SECRET: {{ required "otp_secret must be set" (.Values.mastodon.environment.otp_secret | quote) }}
+  {{- end }}
+  {{- if not (empty .Values.mastodon.environment.secret_key_base) }}
+  SECRET_KEY_BASE: {{ required "secret_key_base must be set" (.Values.mastodon.environment.secret_key_base | b64enc | quote) }}
+  {{- end }}
+  DB_HOST: {{ .Values.postgresql.host }}
+  DB_PORT: {{ .Values.postgresql.port | default "5432" | quote }}
+  DB_NAME: {{ .Values.postgresql.credentials.database }}
+  DB_USER: {{ .Values.postgresql.credentials.username }}
+  DB_PASS: {{ .Values.postgresql.credentials.password }}
+  LOCAL_HTTPS: {{ .Values.mastodon.environment.local_https | quote }}
+  {{- if .Values.redis.enabled }}
+  REDIS_HOST: {{template "mastodon.redis.fullname" . }}-master
+  {{- else }}
+  REDIS_HOST: {{required "When the redis chart is disabled .Values.redis.hostname is required" .Values.redis.hostname }}
+  {{- end }}
+  REDIS_PORT: {{.Values.redis.port | default "6379" | quote }}
+  {{- if .Values.mastodon.smtp.host }}
+  SMTP_SERVER: {{ .Values.mastodon.smtp.host | quote }}
+  {{- end }}
+  {{- if .Values.mastodon.smtp.port }}
+  SMTP_PORT: {{ .Values.mastodon.smtp.port | quote }}
+  {{- end }}
+  {{- if .Values.mastodon.smtp.username }}
+  SMTP_LOGIN: {{ .Values.mastodon.smtp.username | quote }}
+  {{- end }}
+  {{- if .Values.mastodon.smtp.password }}
+  SMTP_PASSWORD: {{ .Values.mastodon.smtp.password | quote }}
+  {{- end }}
+  {{- if .Values.mastodon.smtp.from }}
+  SMTP_FROM_ADDRESS: {{ .Values.mastodon.smtp.from | quote }}
+  {{- end }}
+  {{- if .Values.mastodon.smtp.domain }}
+  SMTP_DOMAIN: {{ .Values.mastodon.smtp.domain | quote }}
+  {{- end }}
+  {{- if .Values.mastodon.smtp.deliveryMethod }}
+  SMTP_DELIVERY_METHOD: {{ .Values.mastodon.smtp.deliveryMethod | quote }}
+  {{- end }}
+  {{- if .Values.mastodon.smtp.authMethod }}
+  SMTP_AUTH_METHOD: {{ .Values.mastodon.smtp.authMethod | quote }}
+  {{- end }}
+  {{- if .Values.mastodon.smtp.verifyMode }}
+  SMTP_OPENSSL_VERIFY_MODE: {{ .Values.mastodon.smtp.verifyMode | quote }}
+  {{- end }}
+  {{- if .Values.mastodon.smtp.startTlsAuto }}
+  SMTP_ENABLE_STARTTLS_AUTO: {{ .Values.mastodon.smtp.startTlsAuto | quote }}
+  {{- end }}
+  {{- if .Values.mastodon.smtp.startTls }}
+  SMTP_ENABLE_STARTTLS: {{ .Values.mastodon.smtp.startTls | quote }}
+  {{- end }}
+  {{- if .Values.mastodon.smtp.tls }}
+  SMTP_TLS: {{ .Values.mastodon.smtp.tls | quote }}
+  {{- end }}
+  {{- if .Values.mastodon.smtp.ssl }}
+  SMTP_SSL: {{ .Values.mastodon.smtp.ssl | quote }}
+  {{- end }}
+  STREAMING_CLUSTER_NUM: {{ .Values.streaming.workers | quote }}
+  NODE_ENV: "production"

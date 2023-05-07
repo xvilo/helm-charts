@@ -1,0 +1,32 @@
+{{- if .Values.jobs.createAdmin.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "mastodon.fullname" . }}-create-admin
+  labels:
+    {{- include "mastodon.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation{{ if .Values.jobs.createAdmin.deleteOnSuccess }},hook-succeeded{{ end }}
+    "helm.sh/hook-weight": "1"
+spec:
+  template:
+    metadata:
+      name: {{ include "mastodon.fullname" . }}-db-migrate
+      {{- with .Values.jobAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: {{ include "mastodon.fullname" . }}-db-migrate
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: [bin/tootctl, accounts, create, {{ .Values.jobs.createAdmin.username | quote }}, --email, {{ .Values.jobs.createAdmin.email | quote }}, --confirmed, --role, Owner]
+          envFrom:
+            - configMapRef:
+                name: {{ include "mastodon.fullname" . }}-environment
+          env:
+{{ include "mastodon.redis.environmentSecrets" . | indent 12 }}
+{{- end }}

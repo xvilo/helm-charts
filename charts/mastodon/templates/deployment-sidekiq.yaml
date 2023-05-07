@@ -1,0 +1,89 @@
+{{- $context := . }}
+{{- range .Values.sidekiq.workers }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mastodon.fullname" $context }}-sidekiq-{{ .name }}
+  labels:
+    {{- include "mastodon.labels" $context | nindent 4 }}
+spec:
+  {{- if not $context.Values.autoscaling.enabled }}
+  replicas: {{ .replicaCount | default 1 }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "mastodon.selectorLabels" $context | nindent 6 }}
+      app.kubernetes.io/component: sidekiq-{{ .name }}
+      app.kubernetes.io/part-of: rails
+  template:
+    metadata:
+      annotations:
+        checksum/environment: {{ include (print $.Template.BasePath "/environment-configmap.yaml") $context | sha256sum }}
+        {{- if $context.Values.podAnnotations }}
+        {{- toYaml $context.Values.podAnnotations | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "mastodon.selectorLabels" $context | nindent 8 }}
+        app.kubernetes.io/component: sidekiq-{{ .name }}
+        app.kubernetes.io/part-of: rails
+    spec:
+      {{- with $context.Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml $context | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "mastodon.serviceAccountName" $context }}
+      securityContext:
+        {{- toYaml $context.Values.podSecurityContext | nindent 8 }}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app.kubernetes.io/name
+                      operator: In
+                      values:
+                        - kube-apiserver
+                topologyKey: kubernetes.io/hostname
+              weight: 100
+      containers:
+        - name: {{ $context.Chart.Name }}
+          securityContext:
+            {{- toYaml $context.Values.securityContext | nindent 12 }}
+          image: "{{ $context.Values.image.repository }}:{{ $context.Values.image.tag | default $context.Chart.AppVersion }}"
+          imagePullPolicy: {{ $context.Values.image.pullPolicy }}
+          command:
+            - bundle
+            - exec
+            - sidekiq
+            - -c
+            - {{ .concurrency | quote }}
+            {{- range .queues }}
+            - -q
+            - {{ . | quote }}
+            {{- end }}
+          resources:
+            {{- toYaml $context.Values.resources | nindent 12 }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "mastodon.fullname" $context }}-environment
+          env:
+{{ include "mastodon.redis.environmentSecrets" $context | indent 12 }}
+          ports:
+            - name: http
+              containerPort: {{ $context.Values.service.port }}
+              protocol: TCP
+      {{- with $context.Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml $context | nindent 8 }}
+      {{- end }}
+      {{- with $context.Values.affinity }}
+      affinity:
+        {{- toYaml $context | nindent 8 }}
+      {{- end }}
+      {{- with $context.Values.tolerations }}
+      tolerations:
+        {{- toYaml $context | nindent 8 }}
+      {{- end }}
+---
+{{- end }}

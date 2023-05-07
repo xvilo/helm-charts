@@ -1,4 +1,5 @@
 # xvilo's Helm Charts
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/default-gh)](https://artifacthub.io/packages/search?repo=default-gh)
 
 The code is provided as-is with no warranties.
 

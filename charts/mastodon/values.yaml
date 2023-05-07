@@ -14,8 +14,8 @@ mastodon:
   environment:
     secret_key_base:
     otp_secret: ''
-    local_https: 'false'
-    local_domain: ''
+    local_https: 'true'
+    local_domain: 'example.social'
   # ~ are unconfigured values
   smtp:
     host: smtp.eu.mailgun.org
@@ -157,3 +157,33 @@ redis:
   hostname: ""
   port: 6379
   existingSecret: ""
+
+minio:
+  api:
+    rewriteIngress:
+      enabled: true
+      # Set your mastodon host
+      host: 'example.social'
+      # Also to be configued in alias_host
+      path: '/s3'
+  enabled: true
+
+s3:
+  enabled: true
+  # When minio.api is enabled the keys
+  # can be obtained from the Minio Console
+  # available at http://mastodon-minio:9001
+  access_key: "xxxxx"
+  access_secret: "yyyyyyyyyyy"
+  # When minio.api is enabled the bucket can
+  # be configured at the Minio Console
+  #  # available at http://mastodon-minio:9001
+  bucket: "mastodon"
+  endpoint: "http://mastodon-minio:9000"
+  hostname: ~
+  region: ~
+  permission: ~
+  protocol: 'https'
+  # For the default settings with the s3 ingress,
+  # update the `example.social` host to your hostname
+  alias_host: 'example.social/s3/mastodon'

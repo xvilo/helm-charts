@@ -31,7 +31,19 @@ mastodon:
     startTls: auto # Set to auto (default), always, or never.
     tls: ~
     ssl: ~
-
+  crons:
+    - name: media-remove
+      schedule: '0 0 * * 0' # At 00:00 on Sunday.
+      command: ["tootctl", "media", "remove"]
+    - name: preview-card-remove
+      schedule: '0 0 * * 0' # At 00:00 on Sunday.
+      command: ["tootctl", "preview_cards", "remove"]
+#    - name: media-remove-orphans
+#      schedule: '0 0 2 * *' # At 00:00 on day-of-month 2
+#      command: ["tootctl", "media", "remove-orphans"]
+#    - name: accounts-cull
+#      schedule: '0 0 1 * *' # At 00:00 on day-of-month 1
+#      command: ["tootctl", "accounts", "cull", "--concurrency 5"]
 jobs:
   createAdmin:
     enabled: false

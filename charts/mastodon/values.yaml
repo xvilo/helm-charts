@@ -34,10 +34,10 @@ mastodon:
   crons:
     - name: media-remove
       schedule: '* * * * *'
-      command: [/home/mastodon/live/bin/tootctl, media, remove]
+      command: [tootctl, media, remove]
     - name: preview-card-remove
       schedule: '* * * * *'
-      command: [/home/mastodon/live/bin/tootctl, preview_cards, remove]
+      command: [tootctl, preview_cards, remove]
 jobs:
   createAdmin:
     enabled: false

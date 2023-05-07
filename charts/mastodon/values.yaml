@@ -142,6 +142,16 @@ sidekiq:
       queues:
         - ingress
 
+# When connecting to a `postgres-operator` database, set sslMode to 'no-verify' and enable `rejectUnauthorized`
+streaming:
+  port: 4000
+  replicas: 1
+  workers: 1
+  rejectUnauthorized: false
+  db:
+    sslMode: ~
+    # sslMode: 'no-verify'
+
 redis:
   enabled: true
   hostname: ""

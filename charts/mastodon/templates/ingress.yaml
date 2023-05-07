@@ -56,6 +56,20 @@ spec:
               serviceName: {{ $fullName }}-web
               servicePort: {{ $svcPort }}
               {{- end }}
+          - path: {{ .path }}api/v1/streaming
+            {{- if and .pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
+            pathType: {{ .pathType }}
+            {{- end }}
+            backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: {{ $fullName }}-streaming
+                port:
+                  number: 4000 # get from values?
+              {{- else }}
+              serviceName: {{ $fullName }}-streaming
+              servicePort: {{ $svcPort }}
+              {{- end }}
           {{- end }}
     {{- end }}
 {{- end }}

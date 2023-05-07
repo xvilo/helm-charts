@@ -63,3 +63,5 @@ data:
   {{- if .Values.mastodon.smtp.ssl }}
   SMTP_SSL: {{ .Values.mastodon.smtp.ssl | quote }}
   {{- end }}
+  STREAMING_CLUSTER_NUM: {{ .Values.streaming.workers | quote }}
+  NODE_ENV: "production"

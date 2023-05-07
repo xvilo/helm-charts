@@ -65,3 +65,23 @@ data:
   {{- end }}
   STREAMING_CLUSTER_NUM: {{ .Values.streaming.workers | quote }}
   NODE_ENV: "production"
+  {{- if .Values.s3.enabled }}
+  S3_BUCKET: {{ .Values.s3.bucket }}
+  S3_ENABLED: "true"
+  S3_ENDPOINT: {{ .Values.s3.endpoint }}
+  S3_HOSTNAME: {{ .Values.s3.hostname }}
+  S3_PROTOCOL: {{ .Values.s3.protocol }}
+  {{- if .Values.s3.permission }}
+  S3_PERMISSION: {{ .Values.s3.permission }}
+  {{- end }}
+  {{- if .Values.s3.region }}
+  S3_REGION: {{ .Values.s3.region }}
+  {{- end }}
+  {{- if .Values.s3.alias_host }}
+  S3_ALIAS_HOST: {{ .Values.s3.alias_host }}
+  {{- end }}
+  {{- if not .Values.s3.existingSecret }}
+  AWS_ACCESS_KEY_ID: "{{ .Values.s3.access_key }}"
+  AWS_SECRET_ACCESS_KEY: "{{ .Values.s3.access_secret }}"
+  {{- end }}
+  {{- end }}

@@ -11,10 +11,11 @@ spec:
       template:
         spec:
           containers:
-            - name: {{ include "mastodon.fullname" $context }}-media-remove
+            - name: {{ include "mastodon.fullname" $context }}-{{ .name }}
               image: "{{ $context.Values.image.repository }}:{{ $context.Values.image.tag | default $context.Chart.AppVersion }}"
               imagePullPolicy: IfNotPresent
-              command: {{ .command }}
+              command:
+{{ toYaml .command | indent 16}}
               envFrom:
                 - configMapRef:
                     name: {{ include "mastodon.fullname" $context }}-environment

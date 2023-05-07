@@ -41,9 +41,6 @@ mastodon:
 #    - name: media-remove-orphans
 #      schedule: '0 0 2 * *' # At 00:00 on day-of-month 2
 #      command: ["tootctl", "media", "remove-orphans"]
-#    - name: media-refresh
-#      schedule: '0 1 * * *' # At 01:00
-#      command: ["tootctl", "media", "refresh"]
 #    - name: accounts-cull
 #      schedule: '0 0 1 * *' # At 00:00 on day-of-month 1
 #      command: ["tootctl", "accounts", "cull", "--concurrency 5"]

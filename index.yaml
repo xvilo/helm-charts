@@ -3,6 +3,25 @@ entries:
   mastodon:
   - apiVersion: v2
     appVersion: v4.1.2
+    created: "2023-05-07T15:10:58.527283264Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.10.*
+    - condition: minio.enabled
+      name: minio
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.4.*
+    description: A Helm chart for Kubernetes
+    digest: 01817bd56c34d3cde3788e25c368ac1632d9fa10cae01f48bf8774c4c8fcb8c3
+    name: mastodon
+    type: application
+    urls:
+    - https://github.com/xvilo/helm-charts/releases/download/mastodon-0.3.0/mastodon-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v2
+    appVersion: v4.1.2
     created: "2023-05-07T14:18:24.850234391Z"
     dependencies:
     - condition: redis.enabled
@@ -147,4 +166,4 @@ entries:
     urls:
     - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.1.0/symfony-app-0.1.0.tgz
     version: 0.1.0
-generated: "2023-05-07T14:18:24.850261693Z"
+generated: "2023-05-07T15:10:58.527307764Z"

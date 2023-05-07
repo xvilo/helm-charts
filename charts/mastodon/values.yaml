@@ -31,7 +31,13 @@ mastodon:
     startTls: auto # Set to auto (default), always, or never.
     tls: ~
     ssl: ~
-
+  crons:
+    - name: media-remove
+      schedule: '* * * * *'
+      command: [/home/mastodon/live/bin/tootctl, media, remove]
+    - name: preview-card-remove
+      schedule: '* * * * *'
+      command: [/home/mastodon/live/bin/tootctl, preview_cards, remove]
 jobs:
   createAdmin:
     enabled: false

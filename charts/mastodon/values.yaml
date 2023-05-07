@@ -160,12 +160,11 @@ redis:
 
 minio:
   api:
-    rewriteIngress:
-      enabled: true
-      # Set your mastodon host
-      host: 'example.social'
-      # Also to be configued in alias_host
-      path: '/s3'
+    # Set your mastodon host
+    host: 'example.social'
+    # Also to be configued in alias_host
+    path: '/s3'
+    rewriteIngress: true
   enabled: true
 
 s3:

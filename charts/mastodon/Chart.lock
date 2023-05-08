@@ -5,5 +5,8 @@ dependencies:
 - name: minio
   repository: https://charts.bitnami.com/bitnami
   version: 12.4.3
-digest: sha256:d06eab341e73656ee427a8e7cb36c00ed0e75b11a136ee859e5aef58ec2d0c06
-generated: "2023-05-07T12:02:47.260247+02:00"
+- name: elasticsearch
+  repository: https://charts.bitnami.com/bitnami
+  version: 19.8.0
+digest: sha256:a3be562cc268c55566cabcf4df3183d531d82e542a0f990e109d3a8754be8494
+generated: "2023-05-07T20:43:55.623173+02:00"

@@ -198,3 +198,6 @@ s3:
   # For the default settings with the s3 ingress,
   # update the `example.social` host to your hostname
   alias_host: 'example.social/s3/mastodon'
+
+elasticsearch:
+  enabled: true

@@ -85,3 +85,8 @@ data:
   AWS_SECRET_ACCESS_KEY: "{{ .Values.s3.access_secret }}"
   {{- end }}
   {{- end }}
+  {{- if .Values.elasticsearch.enabled }}
+  ES_ENABLED: "true"
+  ES_HOST: {{template "mastodon.fullname" . }}-elasticsearch-master-hl
+  ES_PORT: "9200"
+  {{- end }}

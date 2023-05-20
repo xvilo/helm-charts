@@ -28,7 +28,7 @@ spec:
   allowedSourceRanges:  # load balancers' source ranges for both master and replica services
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with .databes }}
+  {{- with .databases }}
   databases:
     {{- toYaml . | nindent 4 }}
   {{- end }}

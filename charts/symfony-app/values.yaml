@@ -170,17 +170,17 @@ postgres:
     numberOfInstances: 2
     # Application/Robot users
     users:
-      zalando:
-        - superuser
-        - createdb
-      foo_user: []
+#      zalando:
+#        - superuser
+#        - createdb
+#      foo_user: []
 #      flyway: []
 #      usersWithSecretRotation:
 #      - foo_user
 #      usersWithInPlaceSecretRotation:
 #      - flyway
 #      - bar_owner_user
-    enableMasterLoadBalancer: a
+    enableMasterLoadBalancer: false
     enableReplicaLoadBalancer: false
     # enable/disable connection pooler deployment
     enableConnectionPooler: false
@@ -190,19 +190,19 @@ postgres:
     enableReplicaPoolerLoadBalancer: false
     allowedSourceRanges:
       - 127.0.0.1/32
-    databases:
-      foo: app
-    preparedDatabases:
-      bar:
-        defaultUsers: true
-        extensions:
-          pg_partman: public
-          pgcrypto: public
-        schemas:
-          data: { }
-          history:
-            defaultRoles: true
-            defaultUsers: false
+    databases: {}
+#      foo: app
+    preparedDatabases: {}
+#      bar:
+#        defaultUsers: true
+#        extensions:
+#          pg_partman: public
+#          pgcrypto: public
+#        schemas:
+#          data: { }
+#          history:
+#            defaultRoles: true
+#            defaultUsers: false
     postgresql:
       version: "15"
       # Expert section
@@ -224,13 +224,13 @@ postgres:
 #        matchLabels:
 #          environment: dev
 #          service: postgres
-    additionalVolumes:
-      - name: empty
-        mountPath: /opt/empty
-        targetContainers:
-          - all
-        volumeSource:
-          emptyDir: { }
+    additionalVolumes: {}
+#      - name: empty
+#        mountPath: /opt/empty
+#        targetContainers:
+#          - all
+#        volumeSource:
+#          emptyDir: { }
 #      - name: data
 #        mountPath: /home/postgres/pgdata/partitions
 #        targetContainers:

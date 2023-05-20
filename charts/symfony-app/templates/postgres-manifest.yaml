@@ -13,7 +13,7 @@ metadata:
 spec:
   dockerImage: ghcr.io/zalando/spilo-15:3.0-p1
   teamId: {{ .teamId | quote }}
-  numberOfInstances: {{ .numberOfInstances | quote }}
+  numberOfInstances: {{ .numberOfInstances }}
   {{- with .users }}
   users:
     {{- toYaml . | nindent 4 }}

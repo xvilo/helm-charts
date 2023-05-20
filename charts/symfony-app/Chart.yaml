@@ -2,7 +2,7 @@ apiVersion: v2
 name: symfony-app
 description: A simple chart to deploy basic Symfony/PHP applications
 type: application
-version: 0.2.2
+version: 0.3.0
 appVersion: 'main'
 keywords:
   - php
@@ -16,7 +16,5 @@ maintainers:
 annotations:
   # Supported kind: added, changed, deprecated, removed, fixed and security
   artifacthub.io/changes: |
-    - kind: fixed
-      description: "Correctly add pod annotations with values override if none are supplied"
     - kind: added
-      description: "An option to not run the composer install init container"
+      description: "Support for postgres operator"

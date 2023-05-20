@@ -57,6 +57,29 @@ entries:
   symfony-app:
   - annotations:
       artifacthub.io/changes: |
+        - kind: added
+          description: "Support for postgres operator"
+    apiVersion: v2
+    appVersion: main
+    created: "2023-05-20T09:33:32.988302457Z"
+    description: A simple chart to deploy basic Symfony/PHP applications
+    digest: 14405f00c3296dd2962412d3bb6a08ddad1751d59a98100b6e8e9d55134aaf82
+    keywords:
+    - php
+    - symfony
+    - application
+    maintainers:
+    - name: xvilo
+      url: https://github.com/xvilo
+    name: symfony-app
+    sources:
+    - https://github.com/xvilo/helm-charts/tree/main/charts/symfony-app
+    type: application
+    urls:
+    - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.3.0/symfony-app-0.3.0.tgz
+    version: 0.3.0
+  - annotations:
+      artifacthub.io/changes: |
         - kind: fixed
           description: "Correctly add pod annotations with values override if none are supplied"
         - kind: added
@@ -166,4 +189,4 @@ entries:
     urls:
     - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.1.0/symfony-app-0.1.0.tgz
     version: 0.1.0
-generated: "2023-05-07T15:10:58.527307764Z"
+generated: "2023-05-20T09:33:32.988461757Z"

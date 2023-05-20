@@ -1,0 +1,107 @@
+{{ with .Values.postgres.operator }}
+{{- if .enabled }}
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: {{ .name }}
+  labels:
+    {{- include "symfony-app.labels" $ | nindent 4 }}
+  {{- with .annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end}}
+spec:
+  dockerImage: ghcr.io/zalando/spilo-15:3.0-p1
+  teamId: {{ .teamId | quote }}
+  numberOfInstances: {{ .numberOfInstances }}
+  {{- with .users }}
+  users:
+    {{- toYaml . | nindent 4 }}
+  {{ end }}
+  enableMasterLoadBalancer: {{ .enableMasterLoadBalancer }}
+  enableReplicaLoadBalancer: {{ .enableReplicaLoadBalancer }}
+  enableConnectionPooler: {{ .enableConnectionPooler }}
+  enableReplicaConnectionPooler: {{ .enableReplicaConnectionPooler }}
+  enableMasterPoolerLoadBalancer: {{ .enableMasterPoolerLoadBalancer }}
+  enableReplicaPoolerLoadBalancer: {{ .enableReplicaPoolerLoadBalancer }}
+  {{- with .allowedSourceRanges }}
+  allowedSourceRanges:  # load balancers' source ranges for both master and replica services
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .databases }}
+  databases:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .preparedDatabases }}
+  preparedDatabases:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .postgresql }}
+  postgresql:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .env }}
+  env:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+
+  {{- with .volume }}
+  volume:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+
+  {{- with .additionalVolumes }}
+  additionalVolumes:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+
+  enableShmVolume: true
+  #  spiloRunAsUser: 101
+  #  spiloRunAsGroup: 103
+  #  spiloFSGroup: 103
+  #  podAnnotations:
+  #    annotation.key: value
+  #  serviceAnnotations:
+  #    annotation.key: value
+  #  podPriorityClassName: "spilo-pod-priority"
+  #  tolerations:
+  #  - key: postgres
+  #    operator: Exists
+  #    effect: NoSchedule
+  {{- with .resources }}
+  resources:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+
+  {{- with .patroni }}
+  patroni:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+
+  {{- with .initContainers }}
+  initContainers:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+
+  {{- with .sidecars }}
+  sidecars:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+
+  {{- with .tls }}
+  tls:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+
+  {{- with .nodeAffinity }}
+  nodeAffinity:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+
+  {{- with .streams }}
+  streams:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+
+{{- end }}
+{{- end }}

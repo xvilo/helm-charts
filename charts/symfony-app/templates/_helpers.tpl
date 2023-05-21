@@ -77,4 +77,25 @@ env:
   - name: PYROSCOPE_APPLICATION_NAME
     value: "{{- default (include "symfony-app.fullname" .) .Values.pyroscope.config.name }}"
   {{ end }}
+  {{- if .Values.postgres.operator.enabled }}
+  - name: "DB_PASS"
+    valueFrom:
+      secretKeyRef:
+        name: {{ template "symfony-app.postgresql.secretName" . }}
+        key: password
+  - name: "DB_USER"
+    valueFrom:
+      secretKeyRef:
+        name: {{ template "symfony-app.postgresql.secretName" . }}
+        key: username
+  - name: "DB_HOST"
+    value: {{ .Values.postgres.operator.name | quote }}
+  {{- end }}
 {{- end }}
+
+{{/*
+Get the postgresql secret.
+*/}}
+{{- define "symfony-app.postgresql.secretName" -}}
+    {{- printf "postgres.%s.credentials.postgresql.%s.zalan.do" (.Values.postgres.operator.name) (.Values.postgres.operator.teamId) -}}
+{{- end -}}

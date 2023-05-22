@@ -3,6 +3,25 @@ entries:
   mastodon:
   - apiVersion: v2
     appVersion: v4.1.2
+    created: "2023-05-22T18:32:30.014391129Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.10.*
+    - condition: minio.enabled
+      name: minio
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.4.*
+    description: A Helm chart for Kubernetes
+    digest: 2ab33b96a712fa2db924acb50876231d76e26ca39e819c607593a37c89ce974d
+    name: mastodon
+    type: application
+    urls:
+    - https://github.com/xvilo/helm-charts/releases/download/mastodon-0.3.1/mastodon-0.3.1.tgz
+    version: 0.3.1
+  - apiVersion: v2
+    appVersion: v4.1.2
     created: "2023-05-07T15:10:58.527283264Z"
     dependencies:
     - condition: redis.enabled
@@ -55,6 +74,29 @@ entries:
     - https://github.com/xvilo/helm-charts/releases/download/mastodon-0.1.0/mastodon-0.1.0.tgz
     version: 0.1.0
   symfony-app:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: added
+          description: "Added the option to spawn Symfony Messenger consumers"
+    apiVersion: v2
+    appVersion: main
+    created: "2023-05-22T18:32:30.214007111Z"
+    description: A simple chart to deploy basic Symfony/PHP applications
+    digest: b474eb48779a815a535162f8461884c3f358922457cfa5d31174137e777752b9
+    keywords:
+    - php
+    - symfony
+    - application
+    maintainers:
+    - name: xvilo
+      url: https://github.com/xvilo
+    name: symfony-app
+    sources:
+    - https://github.com/xvilo/helm-charts/tree/main/charts/symfony-app
+    type: application
+    urls:
+    - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.4.0/symfony-app-0.4.0.tgz
+    version: 0.4.0
   - annotations:
       artifacthub.io/changes: |
         - kind: added
@@ -212,4 +254,4 @@ entries:
     urls:
     - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.1.0/symfony-app-0.1.0.tgz
     version: 0.1.0
-generated: "2023-05-21T13:37:37.429107642Z"
+generated: "2023-05-22T18:32:30.214202613Z"

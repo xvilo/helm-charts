@@ -2,7 +2,7 @@ apiVersion: v2
 name: symfony-app
 description: A simple chart to deploy basic Symfony/PHP applications
 type: application
-version: 0.3.1
+version: 0.4.0
 appVersion: 'main'
 keywords:
   - php
@@ -17,4 +17,4 @@ annotations:
   # Supported kind: added, changed, deprecated, removed, fixed and security
   artifacthub.io/changes: |
     - kind: added
-      description: "Add the postgres operator values needed as env vars"
+      description: "Added the option to spawn Symfony Messenger consumers"

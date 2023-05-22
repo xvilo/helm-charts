@@ -1,0 +1,87 @@
+{{- $context := . }}
+{{- with .Values.messenger.consumers }}
+{{- range . }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "symfony-app.fullname" $context }}-consumer-{{ .name }}
+  labels:
+    app: {{ template "symfony-app.name" $context }}-consumer-{{ .name }}
+spec:
+  replicas: {{ default .replicas $context.Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "symfony-app.name" $context }}-consumer-{{ .name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "symfony-app.name" $context }}-consumer-{{ .name }}
+    spec:
+      containers:
+          - name: {{ include "symfony-app.fullname" $context }}-consumer-{{ .name }}
+            securityContext:
+              {{- toYaml (default .securityContext $context.Values.securityContext)  | nindent 14 }}
+            image: "{{ (default .image $.Values.image.fpm).repository }}:{{ (default .image $.Values.image.fpm).tag }}"
+            imagePullPolicy: {{ (default .image $context.Values.image.fpm).pullPolicy }}
+            workingDir: /app
+            {{- include "symfony-app.env" $context | nindent 12 }}
+            command: ["/bin/sh", "-c", "--"]
+            args:
+              - "/app/bin/console messenger:consume {{ .queue }}{{ if .limit }} --limit {{ .limit }}{{ end }}{{ if .verbose }} -vvv{{ end}}"
+            volumeMounts:
+              - name: app-directory
+                mountPath: /app
+      initContainers:
+        {{- if $context.Values.source.clone }}
+        - name: init-fetch-code
+          image: {{ (printf "%s:%s" $context.Values.image.git.repository $context.Values.image.git.tag) | quote }}
+          workingDir: /app
+          env:
+          volumeMounts:
+            - name: app-directory
+              mountPath: /app
+          command: [ 'sh', '-c', "git clone --depth 1 --branch {{ default .Chart.AppVersion .Values.source.version }} {{ .Values.source.remote }} /app" ]
+          securityContext:
+            {{- toYaml (default .securityContext $context.Values.securityContext) | nindent 18 }}
+        {{- end }}
+        {{- if $context.Values.composer.autoinstall }}
+        - name: dependencies-composer
+          image: "{{ .Values.image.php.repository }}:{{ .Values.image.php.tag }}"
+          workingDir: /app
+          {{- include "symfony-app.env" $context | nindent 10 }}
+          volumeMounts:
+            - name: app-directory
+              mountPath: /app
+          command: [ 'sh', '-c', "composer install  --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader --optimize-autoloader" ]
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 18 }}
+        {{- end }}
+        {{- range default .initContainers $context.Values.initContainers }}
+        - name: {{ .name }}
+          image: {{ .image | default (printf "%s:%s" $context.Values.image.php.repository $context.Values.image.php.tag) | quote }}
+          workingDir: /app
+          {{- include "symfony-app.env" $ | nindent 10 }}
+          volumeMounts:
+            - name: app-directory
+              mountPath: /app
+          command: [ 'sh', '-c', {{ .command | quote }} ]
+          securityContext:
+            {{- toYaml $context.Values.securityContext | nindent 18 }}
+        {{- end }}
+        {{- with default .nodeSelector $context.Values.nodeSelector }}
+        nodeSelector:
+          {{- toYaml $context | nindent 8 }}
+        {{- end }}
+        {{- with default .affinity $context.Values.affinity }}
+        affinity:
+          {{- toYaml $context | nindent 8 }}
+        {{- end }}
+        {{- with default .tolerations $context.Values.tolerations }}
+        tolerations:
+          {{- toYaml $context | nindent 8 }}
+        {{- end }}
+      volumes:
+        - name: app-directory
+          emptyDir: {}
+{{- end }}
+{{- end }}

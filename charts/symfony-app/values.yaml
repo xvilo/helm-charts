@@ -102,6 +102,13 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
+messenger:
+  consumers: []
+#    - name: async
+#      queue: async
+#      verbose: true
+#      replicas: 2
+
 nodeSelector: {}
 
 tolerations: []

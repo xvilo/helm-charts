@@ -47,12 +47,18 @@ spec:
             - name: nginx-config
               mountPath: /etc/nginx/conf.d/
               readOnly: true
+          envFrom:
+            - configMapRef:
+                name: {{ include "symfony-app.fullname" . }}-environment
         - name: {{ include "symfony-app.fullname" . }}-php
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.fpm.repository }}:{{ .Values.image.fpm.tag }}"
           imagePullPolicy: {{ .Values.image.fpm.pullPolicy }}
           workingDir: /app
+          envFrom:
+            - configMapRef:
+                name: {{ include "symfony-app.fullname" . }}-environment
           {{- if .Values.source.copyFromFpm }}
           lifecycle:
             postStart:
@@ -92,6 +98,9 @@ spec:
           command: [ 'sh', '-c', "git clone --depth 1 --branch {{ default .Chart.AppVersion .Values.source.version }} {{ .Values.source.remote }} /app" ]
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "symfony-app.fullname" . }}-environment
         {{- end }}
         {{- if .Values.composer.autoinstall }}
         - name: dependencies-composer
@@ -104,6 +113,9 @@ spec:
           command: [ 'sh', '-c', "composer install  --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader --optimize-autoloader" ]
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "symfony-app.fullname" . }}-environment
         {{- end }}
       {{- range .Values.initContainers }}
         - name: {{ .name }}
@@ -116,6 +128,9 @@ spec:
           command: [ 'sh', '-c', {{ .command | quote }} ]
           securityContext:
             {{- toYaml $.Values.securityContext | nindent 12 }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "symfony-app.fullname" . }}-environment
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

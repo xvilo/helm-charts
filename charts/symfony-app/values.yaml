@@ -23,6 +23,12 @@ image:
     tag: 2.36.3
 
 ##
+# Environment variables
+environment: |
+  APP_ENV: prod
+  APP_DEBUG: 0
+
+##
 # Only https sources are supported
 source:
   copyFromFpm: true
@@ -58,7 +64,6 @@ securityContext:
   #   drop:
   #   - ALL
   # readOnlyRootFilesystem: true
-
 
 service:
   nginx:

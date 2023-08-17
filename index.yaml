@@ -77,6 +77,29 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: added
+          description: "Added the option to copy over the source from the FPM image into the nginx container"
+    apiVersion: v2
+    appVersion: main
+    created: "2023-08-17T09:40:11.355234441Z"
+    description: A simple chart to deploy basic Symfony/PHP applications
+    digest: 53efa29772367e9ef378c27512911ef2704ec31a9e0a24add122ac83b510e2be
+    keywords:
+    - php
+    - symfony
+    - application
+    maintainers:
+    - name: xvilo
+      url: https://github.com/xvilo
+    name: symfony-app
+    sources:
+    - https://github.com/xvilo/helm-charts/tree/main/charts/symfony-app
+    type: application
+    urls:
+    - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.4.1/symfony-app-0.4.1.tgz
+    version: 0.4.1
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: added
           description: "Added the option to spawn Symfony Messenger consumers"
     apiVersion: v2
     appVersion: main
@@ -254,4 +277,4 @@ entries:
     urls:
     - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.1.0/symfony-app-0.1.0.tgz
     version: 0.1.0
-generated: "2023-05-22T18:32:30.214202613Z"
+generated: "2023-08-17T09:40:11.35559625Z"

@@ -53,6 +53,12 @@ spec:
           image: "{{ .Values.image.fpm.repository }}:{{ .Values.image.fpm.tag }}"
           imagePullPolicy: {{ .Values.image.fpm.pullPolicy }}
           workingDir: /app
+          {{- if .Values.source.copyFromFpm }}
+          lifecycle:
+            postStart:
+              exec:
+                command: [ "/bin/sh", "-c", "cp -r /app/. /app-shared" ]
+          {{- end }}
           {{- include "symfony-app.env" . | nindent 10 }}
           ports:
             - name: fpm
@@ -61,9 +67,15 @@ spec:
           {{- toYaml .Values.probes.fpm | nindent 10 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          {{- if not .Values.source.copyFromFpm }}
           volumeMounts:
             - name: app-directory
               mountPath: /app
+          {{- else }}
+          volumeMounts:
+            - name: app-directory
+              mountPath: /app-shared
+          {{- end }}
           {{- if .Values.pyroscope.enabled }}
           command: ['pyroscope']
           args: ['exec', '-spy-name', 'phpspy', 'php-fpm']

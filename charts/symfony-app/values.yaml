@@ -25,6 +25,7 @@ image:
 ##
 # Only https sources are supported
 source:
+  copyFromFpm: true
   clone: true
   remote: https://github.com/symfony/demo.git
   version: 'v2.2.3'

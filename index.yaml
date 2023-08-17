@@ -77,6 +77,29 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: added
+          description: "Add the ability to supply environment variables"
+    apiVersion: v2
+    appVersion: main
+    created: "2023-08-17T10:42:51.714239201Z"
+    description: A simple chart to deploy basic Symfony/PHP applications
+    digest: 72294b713102eb6e4598592638f54134a2e816c3e6d32255c37e66171e7434e1
+    keywords:
+    - php
+    - symfony
+    - application
+    maintainers:
+    - name: xvilo
+      url: https://github.com/xvilo
+    name: symfony-app
+    sources:
+    - https://github.com/xvilo/helm-charts/tree/main/charts/symfony-app
+    type: application
+    urls:
+    - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.4.2/symfony-app-0.4.2.tgz
+    version: 0.4.2
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: added
           description: "Added the option to copy over the source from the FPM image into the nginx container"
     apiVersion: v2
     appVersion: main
@@ -277,4 +300,4 @@ entries:
     urls:
     - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.1.0/symfony-app-0.1.0.tgz
     version: 0.1.0
-generated: "2023-08-17T09:40:11.35559625Z"
+generated: "2023-08-17T10:42:51.714296923Z"

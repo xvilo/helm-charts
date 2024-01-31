@@ -76,6 +76,29 @@ entries:
   symfony-app:
   - annotations:
       artifacthub.io/changes: |
+        - kind: fixed
+          description: "Run deploy hooks post-upgrade"
+    apiVersion: v2
+    appVersion: main
+    created: "2024-01-31T10:29:18.332739137Z"
+    description: A simple chart to deploy basic Symfony/PHP applications
+    digest: 91a69ec438cf2c2034d3164c013d6d9e76f8adfb65ef2fcfa7a475a5659de7f9
+    keywords:
+    - php
+    - symfony
+    - application
+    maintainers:
+    - name: xvilo
+      url: https://github.com/xvilo
+    name: symfony-app
+    sources:
+    - https://github.com/xvilo/helm-charts/tree/main/charts/symfony-app
+    type: application
+    urls:
+    - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.5.1/symfony-app-0.5.1.tgz
+    version: 0.5.1
+  - annotations:
+      artifacthub.io/changes: |
         - kind: added
           description: "Add helm deploy hook configuration"
         - kind: added
@@ -327,4 +350,4 @@ entries:
     urls:
     - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.1.0/symfony-app-0.1.0.tgz
     version: 0.1.0
-generated: "2024-01-31T09:49:56.075038654Z"
+generated: "2024-01-31T10:29:18.332860996Z"

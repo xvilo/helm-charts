@@ -6,7 +6,7 @@ metadata:
   labels:
     {{- include "symfony-app.labels" $ | nindent 4 }}
   annotations:
-    "helm.sh/hook": post-install,pre-upgrade
+    "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-delete-policy": before-hook-creation{{ if $.deleteOnSuccess | default false }},hook-succeeded{{ end }}
     "helm.sh/hook-weight": "1"
 spec:

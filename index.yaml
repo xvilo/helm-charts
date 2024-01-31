@@ -77,6 +77,33 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: added
+          description: "Add helm deploy hook configuration"
+        - kind: added
+          description: "Add ability to add container start command(s)"
+        - kind: added
+          description: "Add ability to control both fpm and php tag with .Values.release"
+    apiVersion: v2
+    appVersion: main
+    created: "2024-01-31T09:49:56.074935031Z"
+    description: A simple chart to deploy basic Symfony/PHP applications
+    digest: 9fd63b3361fc72abce38f0a4993ae2d25c267142b3b906e06777b9abfaa608d9
+    keywords:
+    - php
+    - symfony
+    - application
+    maintainers:
+    - name: xvilo
+      url: https://github.com/xvilo
+    name: symfony-app
+    sources:
+    - https://github.com/xvilo/helm-charts/tree/main/charts/symfony-app
+    type: application
+    urls:
+    - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.5.0/symfony-app-0.5.0.tgz
+    version: 0.5.0
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: added
           description: "Add the ability to supply environment variables"
     apiVersion: v2
     appVersion: main
@@ -300,4 +327,4 @@ entries:
     urls:
     - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.1.0/symfony-app-0.1.0.tgz
     version: 0.1.0
-generated: "2023-08-17T10:42:51.714296923Z"
+generated: "2024-01-31T09:49:56.075038654Z"

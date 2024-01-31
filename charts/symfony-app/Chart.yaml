@@ -2,7 +2,7 @@ apiVersion: v2
 name: symfony-app
 description: A simple chart to deploy basic Symfony/PHP applications
 type: application
-version: 0.4.2
+version: 0.5.0
 appVersion: 'main'
 keywords:
   - php
@@ -17,4 +17,8 @@ annotations:
   # Supported kind: added, changed, deprecated, removed, fixed and security
   artifacthub.io/changes: |
     - kind: added
-      description: "Add the ability to supply environment variables"
+      description: "Add helm deploy hook configuration"
+    - kind: added
+      description: "Add ability to add container start command(s)"
+    - kind: added
+      description: "Add ability to control both fpm and php tag with .Values.release"

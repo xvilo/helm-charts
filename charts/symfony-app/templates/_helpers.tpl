@@ -99,3 +99,17 @@ Get the postgresql secret.
 {{- define "symfony-app.postgresql.secretName" -}}
     {{- printf "postgres.%s.credentials.postgresql.%s.zalan.do" (.Values.postgres.operator.name) (.Values.postgres.operator.teamId) -}}
 {{- end -}}
+
+{{/*
+Get the full PHP version
+*/}}
+{{- define "symfony-app.php.full-version" -}}
+    {{ .Values.image.php.tag | default ( .Values.release | default .Chart.AppVersion)}}
+{{- end -}}
+
+{{/*
+Get the full PHP version
+*/}}
+{{- define "symfony-app.fpm.full-version" -}}
+    {{ .Values.image.php.tag | default ( .Values.release | default .Chart.AppVersion)}}
+{{- end -}}

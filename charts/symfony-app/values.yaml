@@ -22,6 +22,8 @@ image:
     pullPolicy: IfNotPresent
     tag: 2.36.3
 
+release: ~
+
 ##
 # Environment variables
 environment: |
@@ -38,6 +40,9 @@ source:
 
 composer:
   autoinstall: true
+
+fpm:
+  additionalCommands: ~
 
 imagePullSecrets: []
 nameOverride: ""
@@ -389,3 +394,8 @@ postgres:
 initContainers: {}
 #  - name: reload-fixtures
 #    command: 'php bin/console doctrine:fixtures:load'
+
+jobs: {}
+#  - name: reload-fixtures
+#    command: 'php bin/console doctrine:fixtures:load'
+#    deleteOnSuccess: true

@@ -1,0 +1,30 @@
+{{- range .Values.jobs }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "symfony-app.fullname" $ }}-{{ .name }}
+  labels:
+    {{- include "symfony-app.labels" $ | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation{{ if $.deleteOnSuccess | default false }},hook-succeeded{{ end }}
+    "helm.sh/hook-weight": "1"
+spec:
+  template:
+    metadata:
+      name: {{ include "symfony-app.fullname" $ }}-{{ .name }}
+      {{- with $.Values.jobAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: {{ include "symfony-app.fullname" $ }}-{{ .name }}
+          image: "{{ $.Values.image.php.repository }}:{{ include "symfony-app.php.full-version" $ }}"
+          imagePullPolicy: {{ $.Values.image.php.pullPolicy }}
+          command: [ 'sh', '-c', {{ .command | quote }} ]
+          envFrom:
+            - configMapRef:
+                name: {{ include "symfony-app.fullname" $ }}-environment
+{{- end }}

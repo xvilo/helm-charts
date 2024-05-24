@@ -1,0 +1,2 @@
+Thanks for deploying iSponsorBlockTV
+The service is now running on your cluster!

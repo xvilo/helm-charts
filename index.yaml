@@ -1,5 +1,16 @@
 apiVersion: v1
 entries:
+  isponsorblocktv:
+  - apiVersion: v2
+    appVersion: 2.0.6
+    created: "2024-05-24T21:01:55.7733006Z"
+    description: A Helm chart for Kubernetes
+    digest: a8c3af0c5d0ec8ccd4d62386636238cfd85e087d5d88c4d25f10e3d2d0ba44c1
+    name: isponsorblocktv
+    type: application
+    urls:
+    - https://github.com/xvilo/helm-charts/releases/download/isponsorblocktv-0.1.0/isponsorblocktv-0.1.0.tgz
+    version: 0.1.0
   mastodon:
   - apiVersion: v2
     appVersion: v4.1.2
@@ -350,4 +361,4 @@ entries:
     urls:
     - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.1.0/symfony-app-0.1.0.tgz
     version: 0.1.0
-generated: "2024-01-31T10:29:18.332860996Z"
+generated: "2024-05-24T21:01:55.773378296Z"

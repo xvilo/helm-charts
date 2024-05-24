@@ -2,6 +2,28 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+config:
+  devices: []
+    # - screen_id: "xxxxxxxxxx"
+    #   name: "Apple TV 4K"
+    #   offset: 0
+  apikey: ""
+  skip_categories:
+    - "sponsor"
+    - "selfpromo"
+    - "intro"
+    - "outro"
+    - "music_offtopic"
+    - "interaction"
+    - "exclusive_access"
+    - "poi_highlight"
+    - "preview"
+    - "filler"
+  channel_whitelist: []
+  skip_count_tracking: true
+  mute_ads: true
+  skip_ads: true
+
 replicaCount: 1
 
 image:

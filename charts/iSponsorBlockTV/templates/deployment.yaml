@@ -35,6 +35,10 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: {{ template "iSponsorBlockTV.name" . }}-config
+              mountPath: /app/data/
+              readOnly: true
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -47,3 +51,10 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+        - name: {{ template "iSponsorBlockTV.name" . }}-config
+          configMap:
+            name: {{ template "iSponsorBlockTV.name" . }}-config
+            items:
+              - key: config.json
+                path: config.json

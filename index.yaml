@@ -108,6 +108,29 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: fixed
+          description: "Properly quote variables"
+    apiVersion: v2
+    appVersion: main
+    created: "2024-06-25T17:13:02.060249533Z"
+    description: A simple chart to deploy basic Symfony/PHP applications
+    digest: 3170b3a3a19bc33dd0d1d08f39218169cac7280de475ef34a4db0d75e7e4ffae
+    keywords:
+    - php
+    - symfony
+    - application
+    maintainers:
+    - name: xvilo
+      url: https://github.com/xvilo
+    name: symfony-app
+    sources:
+    - https://github.com/xvilo/helm-charts/tree/main/charts/symfony-app
+    type: application
+    urls:
+    - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.5.3/symfony-app-0.5.3.tgz
+    version: 0.5.3
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: fixed
           description: "Fix deployment not using correct variable"
     apiVersion: v2
     appVersion: main
@@ -404,4 +427,4 @@ entries:
     urls:
     - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.1.0/symfony-app-0.1.0.tgz
     version: 0.1.0
-generated: "2024-06-25T17:01:33.511926489Z"
+generated: "2024-06-25T17:13:02.060404403Z"

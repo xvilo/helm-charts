@@ -130,7 +130,7 @@ spec:
             {{- toYaml $.Values.securityContext | nindent 12 }}
           envFrom:
             - configMapRef:
-                name: {{ include "symfony-app.fullname" . }}-environment
+                name: {{ include "symfony-app.fullname" $ }}-environment
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

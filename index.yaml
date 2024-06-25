@@ -108,6 +108,29 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: fixed
+          description: "Fix deployment not using correct variable"
+    apiVersion: v2
+    appVersion: main
+    created: "2024-06-25T17:01:33.511811055Z"
+    description: A simple chart to deploy basic Symfony/PHP applications
+    digest: cceabf28a986a00d781aca4081b91ddad86404863f7685a40950290df10b5c74
+    keywords:
+    - php
+    - symfony
+    - application
+    maintainers:
+    - name: xvilo
+      url: https://github.com/xvilo
+    name: symfony-app
+    sources:
+    - https://github.com/xvilo/helm-charts/tree/main/charts/symfony-app
+    type: application
+    urls:
+    - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.5.2/symfony-app-0.5.2.tgz
+    version: 0.5.2
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: fixed
           description: "Run deploy hooks post-upgrade"
     apiVersion: v2
     appVersion: main
@@ -381,4 +404,4 @@ entries:
     urls:
     - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.1.0/symfony-app-0.1.0.tgz
     version: 0.1.0
-generated: "2024-06-04T10:16:54.576619594Z"
+generated: "2024-06-25T17:01:33.511926489Z"

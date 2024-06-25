@@ -27,8 +27,8 @@ release: ~
 ##
 # Environment variables
 environment: |
-  APP_ENV: prod
-  APP_DEBUG: 0
+  APP_ENV: "prod"
+  APP_DEBUG: "0"
 
 ##
 # Only https sources are supported

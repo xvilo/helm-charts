@@ -2,7 +2,7 @@ apiVersion: v2
 name: symfony-app
 description: A simple chart to deploy basic Symfony/PHP applications
 type: application
-version: 0.5.2
+version: 0.5.3
 appVersion: 'main'
 keywords:
   - php
@@ -17,4 +17,4 @@ annotations:
   # Supported kind: added, changed, deprecated, removed, fixed and security
   artifacthub.io/changes: |
     - kind: fixed
-      description: "Fix deployment not using correct variable"
+      description: "Properly quote variables"

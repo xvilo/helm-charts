@@ -107,6 +107,29 @@ entries:
   symfony-app:
   - annotations:
       artifacthub.io/changes: |
+        - kind: removed
+          description: "Removed php-fpm specific image options, for now."
+    apiVersion: v2
+    appVersion: main
+    created: "2024-06-26T06:56:35.100247048Z"
+    description: A simple chart to deploy basic Symfony/PHP applications
+    digest: 78f50d4ed1ed2c459ef74752d9398e54e0b5329ea0d2f378bfc148b0326078cd
+    keywords:
+    - php
+    - symfony
+    - application
+    maintainers:
+    - name: xvilo
+      url: https://github.com/xvilo
+    name: symfony-app
+    sources:
+    - https://github.com/xvilo/helm-charts/tree/main/charts/symfony-app
+    type: application
+    urls:
+    - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.6.0/symfony-app-0.6.0.tgz
+    version: 0.6.0
+  - annotations:
+      artifacthub.io/changes: |
         - kind: fixed
           description: "Properly quote variables"
     apiVersion: v2
@@ -427,4 +450,4 @@ entries:
     urls:
     - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.1.0/symfony-app-0.1.0.tgz
     version: 0.1.0
-generated: "2024-06-25T17:13:02.060404403Z"
+generated: "2024-06-26T06:56:35.100345763Z"

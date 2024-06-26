@@ -9,10 +9,6 @@ image:
     repository: nginx
     pullPolicy: IfNotPresent
     tag: "1.23"
-  fpm:
-    repository: xvilo/php
-    pullPolicy: IfNotPresent
-    tag: 8.2-fpm
   php:
     repository: xvilo/php
     pullPolicy: IfNotPresent

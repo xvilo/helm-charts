@@ -21,8 +21,8 @@ spec:
           - name: {{ include "symfony-app.fullname" $context }}-consumer-{{ .name }}
             securityContext:
               {{- toYaml (default .securityContext $context.Values.securityContext)  | nindent 14 }}
-            image: "{{ (default .image $.Values.image.fpm).repository }}:{{ (default .image $.Values.image.fpm).tag }}"
-            imagePullPolicy: {{ (default .image $context.Values.image.fpm).pullPolicy }}
+            image: "{{ (default .image $.Values.image.php).repository }}:{{ (default .image $.Values.image.php).tag }}"
+            imagePullPolicy: {{ (default .image $context.Values.image.php).pullPolicy }}
             workingDir: /app
             {{- include "symfony-app.env" $context | nindent 12 }}
             command: ["/bin/sh", "-c", "--"]

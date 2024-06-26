@@ -53,8 +53,8 @@ spec:
         - name: {{ include "symfony-app.fullname" . }}-php
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.fpm.repository }}:{{ include "symfony-app.fpm.full-version" $ }}"
-          imagePullPolicy: {{ .Values.image.fpm.pullPolicy }}
+          image: "{{ .Values.image.php.repository }}:{{ include "symfony-app.fpm.full-version" $ }}"
+          imagePullPolicy: {{ .Values.image.php.pullPolicy }}
           workingDir: /app
           envFrom:
             - configMapRef:

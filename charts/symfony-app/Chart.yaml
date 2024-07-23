@@ -2,7 +2,7 @@ apiVersion: v2
 name: symfony-app
 description: A simple chart to deploy basic Symfony/PHP applications
 type: application
-version: 0.6.0
+version: 0.6.1
 appVersion: 'main'
 keywords:
   - php
@@ -16,5 +16,5 @@ maintainers:
 annotations:
   # Supported kind: added, changed, deprecated, removed, fixed and security
   artifacthub.io/changes: |
-    - kind: removed
-      description: "Removed php-fpm specific image options, for now."
+    - kind: added
+      description: "Added the ability to inject environment variables from a non-helm managed configmap."

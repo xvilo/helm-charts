@@ -26,6 +26,9 @@ environment: |
   APP_ENV: "prod"
   APP_DEBUG: "0"
 
+additionalEnvironmentConfigMaps: []
+#  - name: my-config-map
+
 ##
 # Only https sources are supported
 source:

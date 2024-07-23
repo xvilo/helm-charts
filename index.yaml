@@ -107,6 +107,29 @@ entries:
   symfony-app:
   - annotations:
       artifacthub.io/changes: |
+        - kind: added
+          description: "Added the ability to inject environment variables from a non-helm managed configmap."
+    apiVersion: v2
+    appVersion: main
+    created: "2024-07-23T12:31:24.091013527Z"
+    description: A simple chart to deploy basic Symfony/PHP applications
+    digest: d376b370b901bfab1167a3094a9e9dbd2f76a28d43bde2a047f6b7dc45d4613e
+    keywords:
+    - php
+    - symfony
+    - application
+    maintainers:
+    - name: xvilo
+      url: https://github.com/xvilo
+    name: symfony-app
+    sources:
+    - https://github.com/xvilo/helm-charts/tree/main/charts/symfony-app
+    type: application
+    urls:
+    - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.6.1/symfony-app-0.6.1.tgz
+    version: 0.6.1
+  - annotations:
+      artifacthub.io/changes: |
         - kind: removed
           description: "Removed php-fpm specific image options, for now."
     apiVersion: v2
@@ -450,4 +473,4 @@ entries:
     urls:
     - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.1.0/symfony-app-0.1.0.tgz
     version: 0.1.0
-generated: "2024-06-26T06:56:35.100345763Z"
+generated: "2024-07-23T12:31:24.09117294Z"

@@ -24,6 +24,13 @@ spec:
             image: "{{ (default .image $.Values.image.php).repository }}:{{ (default .image $.Values.image.php).tag }}"
             imagePullPolicy: {{ (default .image $context.Values.image.php).pullPolicy }}
             workingDir: /app
+            envFrom:
+              - configMapRef:
+                  name: {{ include "symfony-app.fullname" $ }}-environment
+              {{ range $.Values.additionalEnvironmentConfigMaps -}}
+              - configMapRef:
+                  name: {{ .name }}
+              {{- end }}
             {{- include "symfony-app.env" $context | nindent 12 }}
             command: ["/bin/sh", "-c", "--"]
             args:

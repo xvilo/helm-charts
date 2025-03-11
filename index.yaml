@@ -6,6 +6,20 @@ entries:
         - kind: security
           description: "Updated iSponsorBlockTV Version."
     apiVersion: v2
+    appVersion: 2.3.1
+    created: "2025-03-11T21:25:16.431805128Z"
+    description: A Helm chart for Kubernetes
+    digest: a12943f96c996519bcf111be8cb80e8fc545861e39da9f905929a56b18cb5caa
+    name: isponsorblocktv
+    type: application
+    urls:
+    - https://github.com/xvilo/helm-charts/releases/download/isponsorblocktv-0.1.5/isponsorblocktv-0.1.5.tgz
+    version: 0.1.5
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: security
+          description: "Updated iSponsorBlockTV Version."
+    apiVersion: v2
     appVersion: 2.3.0
     created: "2025-03-11T21:24:34.167058078Z"
     description: A Helm chart for Kubernetes
@@ -526,4 +540,4 @@ entries:
     urls:
     - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.1.0/symfony-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-03-11T21:24:34.167165709Z"
+generated: "2025-03-11T21:25:16.431978282Z"

@@ -1,6 +1,6 @@
 apiVersion: v2
 name: isponsorblocktv
-description: A Helm chart for Kubernetes
+description: SponsorBlock client for all YouTube TV clients.
 
 # A chart can be either an 'application' or a 'library' chart.
 #

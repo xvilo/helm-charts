@@ -73,6 +73,18 @@ entries:
     urls:
     - https://github.com/xvilo/helm-charts/releases/download/isponsorblocktv-0.1.0/isponsorblocktv-0.1.0.tgz
     version: 0.1.0
+  jackett:
+  - apiVersion: v2
+    appVersion: 0.22.1800
+    created: "2025-04-21T17:45:02.232219646Z"
+    description: API Support for your favorite torrent trackers
+    digest: e5ca42c55706a1e09b41b3d101be81d5b84a18938affa84985140d52bcc3941a
+    icon: https://avatars.githubusercontent.com/u/15383019?s=48&v=4
+    name: jackett
+    type: application
+    urls:
+    - https://github.com/xvilo/helm-charts/releases/download/jackett-1.0.0/jackett-1.0.0.tgz
+    version: 1.0.0
   mastodon:
   - apiVersion: v2
     appVersion: v4.1.2
@@ -540,4 +552,4 @@ entries:
     urls:
     - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.1.0/symfony-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-03-11T21:25:16.431978282Z"
+generated: "2025-04-21T17:45:02.232352164Z"

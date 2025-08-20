@@ -6,6 +6,20 @@ entries:
         - kind: security
           description: "Updated iSponsorBlockTV Version."
     apiVersion: v2
+    appVersion: 2.6.0
+    created: "2025-08-20T08:16:18.000169854Z"
+    description: SponsorBlock client for all YouTube TV clients.
+    digest: 92826be07271f78745472099f0f47e509e7eac53089dd8d0286e3fc26e4a1053
+    name: isponsorblocktv
+    type: application
+    urls:
+    - https://github.com/xvilo/helm-charts/releases/download/isponsorblocktv-1.0.1/isponsorblocktv-1.0.1.tgz
+    version: 1.0.1
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: security
+          description: "Updated iSponsorBlockTV Version."
+    apiVersion: v2
     appVersion: 2.4.0
     created: "2025-04-21T17:55:58.700730249Z"
     description: A Helm chart for Kubernetes
@@ -88,6 +102,17 @@ entries:
     - https://github.com/xvilo/helm-charts/releases/download/isponsorblocktv-0.1.0/isponsorblocktv-0.1.0.tgz
     version: 0.1.0
   jackett:
+  - apiVersion: v2
+    appVersion: 0.22.2117
+    created: "2025-08-20T08:16:18.21292559Z"
+    description: API Support for your favorite torrent trackers
+    digest: d193fd3c054bd585914c2778670ddefb27b8d8e0fb59cd4033c1ea436c4707fd
+    icon: https://avatars.githubusercontent.com/u/15383019?s=48&v=4
+    name: jackett
+    type: application
+    urls:
+    - https://github.com/xvilo/helm-charts/releases/download/jackett-1.1.1/jackett-1.1.1.tgz
+    version: 1.1.1
   - apiVersion: v2
     appVersion: 0.22.1800
     created: "2025-04-21T17:45:02.232219646Z"
@@ -566,4 +591,4 @@ entries:
     urls:
     - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.1.0/symfony-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-04-21T17:55:58.700861203Z"
+generated: "2025-08-20T08:16:18.213049092Z"

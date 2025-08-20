@@ -24,6 +24,9 @@ podAnnotations: {}
 # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 podLabels: {}
 
+persistence:
+  size: 5Gi
+
 podSecurityContext: {}
   # fsGroup: 2000
 

@@ -204,6 +204,29 @@ entries:
           description: "Dont add default volume mount of /app in init containers"
     apiVersion: v2
     appVersion: main
+    created: "2025-09-03T08:31:55.191745775Z"
+    description: A simple chart to deploy basic Symfony/PHP applications
+    digest: 6005d0b507141e0b7f1730a989c6c7619327285313e1ee42616bd78c9069a716
+    keywords:
+    - php
+    - symfony
+    - application
+    maintainers:
+    - name: xvilo
+      url: https://github.com/xvilo
+    name: symfony-app
+    sources:
+    - https://github.com/xvilo/helm-charts/tree/main/charts/symfony-app
+    type: application
+    urls:
+    - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.6.4/symfony-app-0.6.4.tgz
+    version: 0.6.4
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: fixed
+          description: "Dont add default volume mount of /app in init containers"
+    apiVersion: v2
+    appVersion: main
     created: "2025-09-03T08:28:27.747680557Z"
     description: A simple chart to deploy basic Symfony/PHP applications
     digest: 3abc06fad19e918255609a5fd796ecfb20f60704f933fc4e20c30199ae3e02dc
@@ -614,4 +637,4 @@ entries:
     urls:
     - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.1.0/symfony-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-09-03T08:28:27.747883808Z"
+generated: "2025-09-03T08:31:55.191962944Z"

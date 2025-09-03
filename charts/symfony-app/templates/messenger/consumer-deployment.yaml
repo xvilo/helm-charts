@@ -35,9 +35,10 @@ spec:
             command: ["/bin/sh", "-c", "--"]
             args:
               - "/app/bin/console messenger:consume {{ .queue }}{{ if .limit }} --limit {{ .limit }}{{ end }}{{ if .verbose }} -vvv{{ end}}"
+            {{- with .volumeMounts }}
             volumeMounts:
-              - name: app-directory
-                mountPath: /app
+              {{- toYaml . | nindent 14 }}
+            {{- end }}
       initContainers:
         {{- if $context.Values.source.clone }}
         - name: init-fetch-code

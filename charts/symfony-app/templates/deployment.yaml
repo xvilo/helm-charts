@@ -138,9 +138,10 @@ spec:
           image: {{ .image | default (printf "%s:%s" $.Values.image.php.repository (include "symfony-app.php.full-version" $)) | quote }}
           workingDir: /app
           {{- include "symfony-app.env" $ | nindent 10 }}
+          {{- with .volumeMounts }}
           volumeMounts:
-            - name: app-directory
-              mountPath: /app
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           command: [ 'sh', '-c', {{ .command | quote }} ]
           securityContext:
             {{- toYaml $.Values.securityContext | nindent 12 }}

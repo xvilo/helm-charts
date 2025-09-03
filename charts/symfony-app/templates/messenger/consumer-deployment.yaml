@@ -89,9 +89,10 @@ spec:
                 name: {{ .name }}
             {{- end }}
           {{- include "symfony-app.env" $context | nindent 10 }}
+          {{- with .volumeMounts }}
           volumeMounts:
-            - name: app-directory
-              mountPath: /app
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           command: [ 'sh', '-c', {{ .command | quote }} ]
           securityContext:
             {{- toYaml $context.Values.securityContext | nindent 18 }}

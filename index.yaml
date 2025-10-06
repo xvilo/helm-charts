@@ -103,6 +103,17 @@ entries:
     version: 0.1.0
   jackett:
   - apiVersion: v2
+    appVersion: 0.24.82
+    created: "2025-10-06T19:32:13.496354311Z"
+    description: API Support for your favorite torrent trackers
+    digest: 883d289a3b49b1f6b5c5cdeab2a68bac98dc28b49686922e7b13506db416e6ba
+    icon: https://avatars.githubusercontent.com/u/15383019?s=48&v=4
+    name: jackett
+    type: application
+    urls:
+    - https://github.com/xvilo/helm-charts/releases/download/jackett-1.2.0/jackett-1.2.0.tgz
+    version: 1.2.0
+  - apiVersion: v2
     appVersion: 0.22.2117
     created: "2025-08-20T08:16:18.21292559Z"
     description: API Support for your favorite torrent trackers
@@ -660,4 +671,4 @@ entries:
     urls:
     - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.1.0/symfony-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-09-03T08:37:49.501090704Z"
+generated: "2025-10-06T19:32:13.496490186Z"

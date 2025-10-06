@@ -26,6 +26,8 @@ podLabels: {}
 
 persistence:
   size: 5Gi
+  storageClass: ''
+  accessMode: ReadWriteOnce
 
 podSecurityContext: {}
   # fsGroup: 2000

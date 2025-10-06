@@ -5,8 +5,11 @@ metadata:
   labels:
     {{- include "jackett.labels" . | nindent 4 }}
 spec:
+  {{- if .Values.persistence.storageClass }}
+  storageClassName: {{ .Values.persistence.storageClass }}
+  {{- end }}
   accessModes:
-    - ReadWriteOnce
+    - {{ .Values.persistence.accessMode }}
   resources:
     requests:
       storage: {{ .Values.persistence.size }}

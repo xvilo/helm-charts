@@ -121,3 +121,8 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+updateStrategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxUnavailable: 1

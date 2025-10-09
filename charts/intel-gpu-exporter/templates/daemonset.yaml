@@ -3,6 +3,7 @@ kind: DaemonSet
 metadata:
   name: {{ include "intel-gpu-exporter.fullname" . }}
   labels:
+    app: intel-gpu-exporter
     {{- include "intel-gpu-exporter.labels" . | nindent 4 }}
 spec:
   selector:

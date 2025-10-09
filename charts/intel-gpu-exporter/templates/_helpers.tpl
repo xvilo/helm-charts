@@ -34,6 +34,7 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "intel-gpu-exporter.labels" -}}
+app: intel-gpu-exporter
 helm.sh/chart: {{ include "intel-gpu-exporter.chart" . }}
 {{ include "intel-gpu-exporter.selectorLabels" . }}
 {{- if .Chart.AppVersion }}

@@ -63,7 +63,8 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
-nodeSelector: {}
+nodeSelector:
+  intel.feature.node.kubernetes.io/gpu: "true"
 
 tolerations: []
 

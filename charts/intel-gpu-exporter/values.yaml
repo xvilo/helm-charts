@@ -75,3 +75,9 @@ updateStrategy:
   type: RollingUpdate
   rollingUpdate:
     maxUnavailable: 1
+
+devices:
+  dri:
+    enabled: true
+    hostPath: /dev/dri
+    mountPath: /dev/dri

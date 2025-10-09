@@ -39,6 +39,18 @@ spec:
               protocol: TCP
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            {{- if .Values.devices.dri.enabled }}
+            - name: dev-dri
+              mountPath: {{ .Values.devices.dri.mountPath }}
+            {{- end }}
+      volumes:
+        {{- if .Values.devices.dri.enabled }}
+        - name: dev-dri
+          hostPath:
+            path: {{ .Values.devices.dri.hostPath }}
+            type: Directory
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -51,7 +63,6 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-
   {{- with .Values.updateStrategy }}
   updateStrategy:
     {{- toYaml . | nindent 4 }}

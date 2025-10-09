@@ -1,0 +1,151 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+title: Intel GPU Exporter
+description: Schema for intel-gpu-exporter Helm chart values
+type: object
+properties:
+  image:
+    type: object
+    properties:
+      repository:
+        type: string
+        description: Container image repository
+        default: andrewgolikov55/intel-gpu-exporter
+      pullPolicy:
+        type: string
+        description: Image pull policy
+        default: IfNotPresent
+      tag:
+        type: string
+        description: Image tag (defaults to chart appVersion)
+        default: ""
+  imagePullSecrets:
+    type: array
+    description: Secrets for pulling images from private registries
+    items:
+      type: string
+    default: []
+  nameOverride:
+    type: string
+    description: Override the chart name
+    default: ""
+  fullnameOverride:
+    type: string
+    description: Override the full release name
+    default: ""
+  serviceAccount:
+    type: object
+    properties:
+      create:
+        type: boolean
+        description: Whether to create a service account
+        default: true
+      automount:
+        type: boolean
+        description: Automatically mount service account credentials
+        default: true
+      annotations:
+        type: object
+        description: Annotations to add to the service account
+        additionalProperties:
+          type: string
+        default: {}
+      name:
+        type: string
+        description: Custom service account name
+        default: ""
+  podAnnotations:
+    type: object
+    description: Annotations for pods
+    additionalProperties:
+      type: string
+    default: {}
+  podLabels:
+    type: object
+    description: Labels for pods
+    additionalProperties:
+      type: string
+    default: {}
+  podSecurityContext:
+    type: object
+    description: Pod-level security context
+    default: {}
+  securityContext:
+    type: object
+    description: Container-level security context
+    properties:
+      privileged:
+        type: boolean
+        default: true
+      capabilities:
+        type: object
+        properties:
+          add:
+            type: array
+            items:
+              type: string
+            default:
+              - SYS_ADMIN
+  service:
+    type: object
+    properties:
+      type:
+        type: string
+        description: Kubernetes service type
+        default: ClusterIP
+      port:
+        type: integer
+        description: Service port for metrics
+        default: 9100
+  resources:
+    type: object
+    description: CPU/memory resource limits and requests
+    default: {}
+  nodeSelector:
+    type: object
+    description: Node selector for GPU-enabled nodes
+    additionalProperties:
+      type: string
+    default:
+      intel.feature.node.kubernetes.io/gpu: "true"
+  tolerations:
+    type: array
+    description: Tolerations for scheduling
+    items:
+      type: object
+    default: []
+  affinity:
+    type: object
+    description: Affinity rules
+    default: {}
+  updateStrategy:
+    type: object
+    properties:
+      type:
+        type: string
+        description: Deployment update strategy
+        default: RollingUpdate
+      rollingUpdate:
+        type: object
+        properties:
+          maxUnavailable:
+            type: integer
+            description: Max unavailable pods during update
+            default: 1
+  devices:
+    type: object
+    properties:
+      dri:
+        type: object
+        properties:
+          enabled:
+            type: boolean
+            description: Mount /dev/dri for GPU access
+            default: true
+          hostPath:
+            type: string
+            description: Host path for GPU device
+            default: /dev/dri
+          mountPath:
+            type: string
+            description: Mount path inside container
+            default: /dev/dri

@@ -1,0 +1,2 @@
+Thanks for deploying intel-gpu-exporter
+The service is now running on your cluster!

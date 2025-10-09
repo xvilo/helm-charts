@@ -53,9 +53,25 @@ You can configure Prometheus to scrape these endpoints automatically if it’s s
 ### 🧩 Example Prometheus Scrape Configuration
 
 If your Prometheus doesn’t use Kubernetes service discovery, you can manually add a job:
-```
-- job_name: "intel-gpu-exporter"
-  static_configs:
-    - targets:
-      - "intel-gpu-exporter.observability.svc.cluster.local:9100"
+```yaml
+scrape_configs:
+  - job_name: "intel-gpu-exporter"
+    kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names:
+            - observability
+    relabel_configs:
+      # Only scrape pods with label app=intel-gpu-exporter
+      - source_labels: [__meta_kubernetes_pod_label_app]
+        action: keep
+        regex: intel-gpu-exporter
+      # Use pod IP and port 9100
+      - source_labels: [__meta_kubernetes_pod_ip]
+        target_label: __address__
+        regex: (.+)
+        replacement: $1:9100
+      # Optional: add node name as label
+      - source_labels: [__meta_kubernetes_pod_node_name]
+        target_label: kubernetes_node
 ```

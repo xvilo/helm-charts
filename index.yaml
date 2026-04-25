@@ -17,6 +17,20 @@ entries:
         - kind: security
           description: "Updated iSponsorBlockTV Version."
     apiVersion: v2
+    appVersion: 2.7.0
+    created: "2026-04-25T18:13:23.856882823Z"
+    description: SponsorBlock client for all YouTube TV clients.
+    digest: 5abc8c6c11fd0e5bf586deebf8276f1e5d67eceb044bac88c7dd72f893e45cf3
+    name: isponsorblocktv
+    type: application
+    urls:
+    - https://github.com/xvilo/helm-charts/releases/download/isponsorblocktv-1.0.3/isponsorblocktv-1.0.3.tgz
+    version: 1.0.3
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: security
+          description: "Updated iSponsorBlockTV Version."
+    apiVersion: v2
     appVersion: 2.6.1
     created: "2025-12-16T18:57:57.959537624Z"
     description: SponsorBlock client for all YouTube TV clients.
@@ -696,4 +710,4 @@ entries:
     urls:
     - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.1.0/symfony-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-12-16T18:57:57.959658169Z"
+generated: "2026-04-25T18:13:23.857211491Z"

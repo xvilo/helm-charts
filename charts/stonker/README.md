@@ -8,9 +8,12 @@ A self-contained Helm chart in [`stonker/`](./stonker) deploys the whole app:
 | `worker` Deployment | 1 replica running the scheduler (daily price fetch + IBKR Flex pull) |
 | `migrate` Job | runs Doctrine migrations on every install/upgrade (post hook) |
 | `frontend` Deployment + Service | React SPA on nginx |
-| `postgres` StatefulSet + Service | bundled single-instance Postgres (optional) |
 | `Ingress` | routes `/api` → backend, everything else → frontend |
-| `Secret` / `ConfigMap` | app secret, DB URL, JWT keys, env |
+| `Secret` / `ConfigMap` | APP_SECRET, JWT passphrase, app config |
+
+> **No database is bundled.** Provide an external Postgres (e.g. via the
+> [Zalando postgres-operator](https://github.com/zalando/postgres-operator)) and
+> point the chart at it — see [Database](#database) below.
 
 ## 1. Build and push the images
 
@@ -42,13 +45,13 @@ helm install stonker deploy/stonker \
   --set image.frontend.tag=0.1.0 \
   --set ingress.host=stonker.example.com \
   --set-file jwt.privateKey=backend/config/jwt/private.pem \
-  --set-file jwt.publicKey=backend/config/jwt/public.pem
+  --set-file jwt.publicKey=backend/config/jwt/public.pem \
+  --values db-values.yaml   # database.* — see Database below
 ```
 
-`APP_SECRET` and the Postgres password are auto-generated and **persisted across
-upgrades** (the chart reads back the existing Secret). `APP_SECRET` also encrypts
-stored broker credentials, so it must stay stable — let the chart manage it, or
-set your own with `--set app.secret=…`.
+`APP_SECRET` is auto-generated and **persisted across upgrades** (the chart reads
+back the existing Secret). It also encrypts stored broker credentials, so it must
+stay stable — let the chart manage it, or set your own with `--set app.secret=…`.
 
 Upgrades re-run migrations automatically:
 
@@ -66,12 +69,44 @@ With [cert-manager](https://cert-manager.io) + nginx-ingress:
 --set 'ingress.annotations.cert-manager\.io/cluster-issuer=letsencrypt-prod'
 ```
 
-## Use a managed database instead of the bundled Postgres
+## Database
+
+The chart bundles no database — it connects to an external Postgres via
+`DATABASE_HOST/PORT/NAME/USER/PASSWORD/SERVER_VERSION`. Each `database.*` value is
+a string **or** a Kubernetes-native object (rendered verbatim), so the user and
+password can come straight from an operator-managed Secret.
+
+With the **Zalando postgres-operator** — it provisions a cluster and creates a
+Secret (keys `username` / `password`) named like
+`<role>.<cluster>.credentials.postgresql.acid.zalan.do` — a `db-values.yaml`:
+
+```yaml
+database:
+  host: stonker-db.my-namespace.svc.cluster.local   # the operator's cluster service
+  name: stonker
+  port: 5432
+  serverVersion: "16"
+  user:
+    valueFrom:
+      secretKeyRef:
+        name: stonker.stonker-db.credentials.postgresql.acid.zalan.do
+        key: username
+  password:
+    valueFrom:
+      secretKeyRef:
+        name: stonker.stonker-db.credentials.postgresql.acid.zalan.do
+        key: password
+```
+
+For a plain managed DB you can inline strings instead:
 
 ```bash
---set postgresql.enabled=false \
---set externalDatabase.url='postgresql://user:pass@your-db:5432/stonker?serverVersion=16&charset=utf8'
+--set database.host=your-db --set database.name=stonker \
+--set database.user=stonker --set database.password=secret
 ```
+
+The migration Job and a `wait-for-db` init container both use this connection, so
+rollout waits for the database to be reachable before serving.
 
 ## Market-data credentials
 

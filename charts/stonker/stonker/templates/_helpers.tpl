@@ -46,32 +46,48 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
 {{/*
-Market-data env vars. Each value under .Values.marketData may be either:
-  - a string  -> rendered as `value: "..."`
-  - a map     -> rendered as-is (e.g. `valueFrom: { secretKeyRef: {...} }`)
-Empty/nil values are skipped so the image's .env defaults apply.
+Render a name->value map as container `env:` entries. Each value may be:
+  - a scalar (string/number) -> rendered as `value: "..."`
+  - a map                    -> rendered as-is (e.g. `valueFrom: { secretKeyRef: {...} }`)
+Empty/nil values are skipped so the image's .env defaults apply. Expects the map as `.`.
 */}}
-{{- define "stonker.marketDataEnv" -}}
-{{- $vars := dict
-  "EODHD_API_KEY" .Values.marketData.eodhdApiKey
-  "TWELVEDATA_API_KEY" .Values.marketData.twelveDataApiKey
-  "OPENFIGI_API_KEY" .Values.marketData.openFigiApiKey
-  "YAHOO_USER_AGENT" .Values.marketData.yahooUserAgent
-  "YAHOO_COOKIE" .Values.marketData.yahooCookie
--}}
-{{- range $name, $value := $vars }}
+{{- define "stonker.renderEnvMap" -}}
+{{- range $name, $value := . }}
 {{- if $value }}
 - name: {{ $name }}
-{{- if kindIs "string" $value }}
-  value: {{ $value | quote }}
-{{- else }}
+{{- if kindIs "map" $value }}
 {{ toYaml $value | indent 2 }}
+{{- else }}
+  value: {{ $value | quote }}
 {{- end }}
 {{- end }}
 {{- end }}
 {{- end -}}
 
-{{/* Init container that blocks until the database accepts connections. */}}
+{{/* Database connection env (string or secretKeyRef object per field). */}}
+{{- define "stonker.databaseEnv" -}}
+{{- include "stonker.renderEnvMap" (dict
+  "DATABASE_HOST" .Values.database.host
+  "DATABASE_PORT" .Values.database.port
+  "DATABASE_NAME" .Values.database.name
+  "DATABASE_USER" .Values.database.user
+  "DATABASE_PASSWORD" .Values.database.password
+  "DATABASE_SERVER_VERSION" .Values.database.serverVersion
+) -}}
+{{- end -}}
+
+{{/* Market-data env (string or secretKeyRef object per field). */}}
+{{- define "stonker.marketDataEnv" -}}
+{{- include "stonker.renderEnvMap" (dict
+  "EODHD_API_KEY" .Values.marketData.eodhdApiKey
+  "TWELVEDATA_API_KEY" .Values.marketData.twelveDataApiKey
+  "OPENFIGI_API_KEY" .Values.marketData.openFigiApiKey
+  "YAHOO_USER_AGENT" .Values.marketData.yahooUserAgent
+  "YAHOO_COOKIE" .Values.marketData.yahooCookie
+) -}}
+{{- end -}}
+
+{{/* Init container that blocks until the (external) database accepts connections. */}}
 {{- define "stonker.waitForDb" -}}
 - name: wait-for-db
   image: {{ include "stonker.backendImage" . }}
@@ -80,6 +96,8 @@ Empty/nil values are skipped so the image's .env defaults apply.
     - sh
     - -c
     - 'until php bin/console dbal:run-sql "SELECT 1" >/dev/null 2>&1; do echo "waiting for database…"; sleep 2; done'
+  env:
+    {{- include "stonker.databaseEnv" . | nindent 4 }}
   envFrom:
     {{- include "stonker.envFrom" . | nindent 4 }}
 {{- end -}}

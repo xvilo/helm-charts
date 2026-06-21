@@ -68,24 +68,33 @@ marketData:
   yahooUserAgent: ""     # YAHOO_USER_AGENT (defaults to a browser UA in .env)
   yahooCookie: ""        # YAHOO_COOKIE (A1/A3 session cookie)
 
-# Bundled single-instance Postgres. Disable to use a managed database.
-postgresql:
-  enabled: true
-  image: postgres:16-alpine
-  auth:
-    username: stonker
-    database: stonker
-    password: ""        # auto-generated and persisted if empty
-  persistence:
-    size: 8Gi
-    storageClass: ""
-  resources:
-    requests: { cpu: 100m, memory: 256Mi }
-    limits: { memory: 512Mi }
-
-# Used only when postgresql.enabled = false.
-externalDatabase:
-  url: ""               # postgresql://user:pass@host:5432/db?serverVersion=16&charset=utf8
+# External Postgres connection (no DB is bundled — use an operator like Zalando).
+# Each value may be a plain string OR a Kubernetes-native object rendered as the
+# env var's source — so user/password can come straight from the operator's
+# Secret. Injected as DATABASE_HOST/PORT/NAME/USER/PASSWORD/SERVER_VERSION.
+#
+# Example with the Zalando postgres-operator (it creates a Secret with `username`
+# and `password` keys, e.g. <role>.<cluster>.credentials.postgresql.acid.zalan.do):
+#   database:
+#     host: stonker-db.my-namespace.svc.cluster.local
+#     name: stonker
+#     user:
+#       valueFrom:
+#         secretKeyRef:
+#           name: stonker.stonker-db.credentials.postgresql.acid.zalan.do
+#           key: username
+#     password:
+#       valueFrom:
+#         secretKeyRef:
+#           name: stonker.stonker-db.credentials.postgresql.acid.zalan.do
+#           key: password
+database:
+  host: ""              # required (service/host of the Postgres cluster)
+  port: 5432
+  name: ""              # required (database name)
+  user: ""              # required — string or secretKeyRef object
+  password: ""          # required — string or secretKeyRef object
+  serverVersion: "16"
 
 ingress:
   enabled: true

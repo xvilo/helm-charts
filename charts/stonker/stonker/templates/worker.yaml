@@ -37,10 +37,11 @@ spec:
           # Runs the daily price fetch + IBKR Flex pull. --time-limit recycles the
           # process hourly so a fresh worker picks up new code/config.
           command: ["php", "bin/console", "messenger:consume", "scheduler_default", "--time-limit=3600", "-v"]
-          {{- with (include "stonker.marketDataEnv" . | trim) }}
           env:
+            {{- include "stonker.databaseEnv" . | nindent 12 }}
+            {{- with (include "stonker.marketDataEnv" . | trim) }}
             {{- . | nindent 12 }}
-          {{- end }}
+            {{- end }}
           envFrom:
             {{- include "stonker.envFrom" . | nindent 12 }}
           volumeMounts:

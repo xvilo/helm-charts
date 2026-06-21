@@ -29,5 +29,7 @@ spec:
           image: {{ include "stonker.backendImage" . }}
           imagePullPolicy: {{ .Values.image.backend.pullPolicy }}
           command: ["php", "bin/console", "doctrine:migrations:migrate", "--no-interaction", "--allow-no-migration"]
+          env:
+            {{- include "stonker.databaseEnv" . | nindent 12 }}
           envFrom:
             {{- include "stonker.envFrom" . | nindent 12 }}

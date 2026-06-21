@@ -50,10 +50,11 @@ spec:
           ports:
             - name: http
               containerPort: 8080
-          {{- with (include "stonker.marketDataEnv" . | trim) }}
           env:
+            {{- include "stonker.databaseEnv" . | nindent 12 }}
+            {{- with (include "stonker.marketDataEnv" . | trim) }}
             {{- . | nindent 12 }}
-          {{- end }}
+            {{- end }}
           envFrom:
             {{- include "stonker.envFrom" . | nindent 12 }}
           volumeMounts:

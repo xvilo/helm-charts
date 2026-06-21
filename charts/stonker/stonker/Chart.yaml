@@ -1,0 +1,6 @@
+apiVersion: v2
+name: stonker
+description: Self-hosted stocks & ETF portfolio tracker (Symfony API + React SPA)
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

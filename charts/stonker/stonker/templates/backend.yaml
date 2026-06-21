@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "stonker.fullname" . }}-backend
+  labels:
+    {{- include "stonker.labels" . | nindent 4 }}
+    app.kubernetes.io/component: backend
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+  selector:
+    app.kubernetes.io/name: {{ include "stonker.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: backend
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "stonker.fullname" . }}-backend
+  labels:
+    {{- include "stonker.labels" . | nindent 4 }}
+    app.kubernetes.io/component: backend
+spec:
+  replicas: {{ .Values.backend.replicas }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "stonker.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/component: backend
+  template:
+    metadata:
+      labels:
+        {{- include "stonker.labels" . | nindent 8 }}
+        app.kubernetes.io/component: backend
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      initContainers:
+        {{- include "stonker.waitForDb" . | nindent 8 }}
+      containers:
+        - name: backend
+          image: {{ include "stonker.backendImage" . }}
+          imagePullPolicy: {{ .Values.image.backend.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            {{- include "stonker.databaseEnv" . | nindent 12 }}
+            {{- with (include "stonker.marketDataEnv" . | trim) }}
+            {{- . | nindent 12 }}
+            {{- end }}
+          envFrom:
+            {{- include "stonker.envFrom" . | nindent 12 }}
+          volumeMounts:
+            {{- include "stonker.jwtVolumeMount" . | nindent 12 }}
+          readinessProbe:
+            httpGet: { path: /api, port: http }
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: { path: /api, port: http }
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+            {{- toYaml .Values.backend.resources | nindent 12 }}
+      volumes:
+        {{- include "stonker.jwtVolume" . | nindent 8 }}

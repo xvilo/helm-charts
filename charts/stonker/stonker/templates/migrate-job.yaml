@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "stonker.fullname" . }}-migrate
+  labels:
+    {{- include "stonker.labels" . | nindent 4 }}
+    app.kubernetes.io/component: migrate
+  annotations:
+    # Run after the release's resources (incl. Postgres) exist, on every up/install.
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 6
+  template:
+    metadata:
+      labels:
+        {{- include "stonker.labels" . | nindent 8 }}
+        app.kubernetes.io/component: migrate
+    spec:
+      restartPolicy: Never
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      initContainers:
+        {{- include "stonker.waitForDb" . | nindent 8 }}
+      containers:
+        - name: migrate
+          image: {{ include "stonker.backendImage" . }}
+          imagePullPolicy: {{ .Values.image.backend.pullPolicy }}
+          command: ["php", "bin/console", "doctrine:migrations:migrate", "--no-interaction", "--allow-no-migration"]
+          env:
+            {{- include "stonker.databaseEnv" . | nindent 12 }}
+          envFrom:
+            {{- include "stonker.envFrom" . | nindent 12 }}

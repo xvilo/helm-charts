@@ -1,0 +1,53 @@
+{{- if .Values.worker.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "stonker.fullname" . }}-worker
+  labels:
+    {{- include "stonker.labels" . | nindent 4 }}
+    app.kubernetes.io/component: worker
+spec:
+  # Single replica: the scheduler keeps its state per-process.
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "stonker.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/component: worker
+  template:
+    metadata:
+      labels:
+        {{- include "stonker.labels" . | nindent 8 }}
+        app.kubernetes.io/component: worker
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      initContainers:
+        {{- include "stonker.waitForDb" . | nindent 8 }}
+      containers:
+        - name: worker
+          image: {{ include "stonker.backendImage" . }}
+          imagePullPolicy: {{ .Values.image.backend.pullPolicy }}
+          # Runs the daily price fetch + IBKR Flex pull. --time-limit recycles the
+          # process hourly so a fresh worker picks up new code/config.
+          command: ["php", "bin/console", "messenger:consume", "scheduler_default", "--time-limit=3600", "-v"]
+          env:
+            {{- include "stonker.databaseEnv" . | nindent 12 }}
+            {{- with (include "stonker.marketDataEnv" . | trim) }}
+            {{- . | nindent 12 }}
+            {{- end }}
+          envFrom:
+            {{- include "stonker.envFrom" . | nindent 12 }}
+          volumeMounts:
+            {{- include "stonker.jwtVolumeMount" . | nindent 12 }}
+          resources:
+            {{- toYaml .Values.worker.resources | nindent 12 }}
+      volumes:
+        {{- include "stonker.jwtVolume" . | nindent 8 }}
+{{- end -}}

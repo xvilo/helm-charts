@@ -1,0 +1,97 @@
+# -- Container images. Point these at your registry and tags.
+image:
+  backend:
+    repository: ghcr.io/xvilo/stonker-backend
+    tag: ""          # defaults to .Chart.appVersion
+    pullPolicy: IfNotPresent
+  frontend:
+    repository: ghcr.io/xvilo/stonker-frontend
+    tag: "" # defaults to .Chart.appVersion
+    pullPolicy: IfNotPresent
+imagePullSecrets: []
+
+backend:
+  replicas: 2
+  resources:
+    requests: { cpu: 100m, memory: 192Mi }
+    limits: { memory: 512Mi }
+
+# Single Messenger worker that runs the schedule (daily price fetch + IBKR Flex
+# pull). Keep at 1 replica — the scheduler state is per-process.
+worker:
+  enabled: true
+  resources:
+    requests: { cpu: 50m, memory: 128Mi }
+    limits: { memory: 256Mi }
+
+frontend:
+  replicas: 2
+  resources:
+    requests: { cpu: 25m, memory: 32Mi }
+    limits: { memory: 64Mi }
+
+app:
+  env: prod
+  # APP_SECRET — leave empty to auto-generate and persist across upgrades.
+  # IMPORTANT: this key also encrypts stored broker credentials, so keep it stable.
+  secret: ""
+  # Proxy CIDRs to trust for X-Forwarded-* (typical cluster pod ranges).
+  trustedProxies: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+  # Empty = same-origin only (SPA and API share the ingress host). Set a regex to allow others.
+  corsAllowOrigin: ""
+
+# JWT signing keys (RS256). Generate once:
+#   php bin/console lexik:jwt:generate-keypair
+# then pass with: --set-file jwt.privateKey=config/jwt/private.pem \
+#                  --set-file jwt.publicKey=config/jwt/public.pem
+# Or reference a pre-created secret containing private.pem / public.pem.
+jwt:
+  existingSecret: ""
+  privateKey: ""
+  publicKey: ""
+  passphrase: ""
+
+# Market-data credentials. Each value may be EITHER:
+#   - a plain string (used directly as the env value), e.g.
+#       eodhdApiKey: "6a37...20"
+#   - a Kubernetes-native object (rendered verbatim), e.g. to read from a Secret:
+#       eodhdApiKey:
+#         valueFrom:
+#           secretKeyRef:
+#             name: stonker-market-data
+#             key: eodhd
+# Leave empty to omit the var entirely (the image's .env default applies).
+marketData:
+  eodhdApiKey: ""        # primary price provider (EODHD_API_KEY)
+  twelveDataApiKey: ""   # fallback provider (TWELVEDATA_API_KEY)
+  openFigiApiKey: ""     # ISIN->ticker resolution (OPENFIGI_API_KEY)
+  yahooUserAgent: ""     # YAHOO_USER_AGENT (defaults to a browser UA in .env)
+  yahooCookie: ""        # YAHOO_COOKIE (A1/A3 session cookie)
+
+# Bundled single-instance Postgres. Disable to use a managed database.
+postgresql:
+  enabled: true
+  image: postgres:16-alpine
+  auth:
+    username: stonker
+    database: stonker
+    password: ""        # auto-generated and persisted if empty
+  persistence:
+    size: 8Gi
+    storageClass: ""
+  resources:
+    requests: { cpu: 100m, memory: 256Mi }
+    limits: { memory: 512Mi }
+
+# Used only when postgresql.enabled = false.
+externalDatabase:
+  url: ""               # postgresql://user:pass@host:5432/db?serverVersion=16&charset=utf8
+
+ingress:
+  enabled: true
+  className: nginx
+  host: stonker.example.com
+  annotations: {}
+  tls:
+    enabled: false
+    secretName: ""      # e.g. stonker-tls (managed by cert-manager)

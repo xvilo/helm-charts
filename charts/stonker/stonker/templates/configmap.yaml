@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "stonker.fullname" . }}-config
+  labels:
+    {{- include "stonker.labels" . | nindent 4 }}
+data:
+  APP_ENV: {{ .Values.app.env | quote }}
+  APP_DEBUG: "0"
+  TRUSTED_PROXIES: {{ .Values.app.trustedProxies | quote }}
+  CORS_ALLOW_ORIGIN: {{ .Values.app.corsAllowOrigin | default (printf "^https?://%s$" .Values.ingress.host) | quote }}
+  DEFAULT_URI: {{ printf "https://%s" .Values.ingress.host | quote }}
+  MESSENGER_TRANSPORT_DSN: "doctrine://default?auto_setup=0"

@@ -29,7 +29,6 @@ spec:
       labels:
         {{- include "airtrail.selectorLabels" . | nindent 8 }}
       annotations:
-        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
         {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -53,11 +52,7 @@ spec:
                 echo "waiting for database…"; sleep 2;
               done
           env:
-            - name: DB_URL
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "airtrail.secretName" . }}
-                  key: {{ include "airtrail.dbUrlKey" . }}
+            {{- include "airtrail.databaseEnv" . | nindent 12 }}
       {{- end }}
       containers:
         - name: airtrail
@@ -72,11 +67,7 @@ spec:
           env:
             - name: ORIGIN
               value: {{ .Values.origin | quote }}
-            - name: DB_URL
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "airtrail.secretName" . }}
-                  key: {{ include "airtrail.dbUrlKey" . }}
+            {{- include "airtrail.databaseEnv" . | nindent 12 }}
             {{- if .Values.persistence.enabled }}
             - name: UPLOAD_LOCATION
               value: /app/uploads

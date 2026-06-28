@@ -39,24 +39,26 @@ persistence:
   existingClaim: ""     # use a pre-created PVC instead of provisioning one
 
 # PostgreSQL connection. No database is bundled — manage it externally.
-# Provide the connection in ONE of three ways (checked in this order):
-#   1. existingSecret  — reference a Secret you manage that holds the URL
-#   2. url             — a full connection URL set inline / via --set
-#   3. host/port/...   — individual components the chart assembles into a URL
+# AirTrail consumes a single DB_URL, which the chart assembles at runtime from the
+# components below (via Kubernetes env interpolation), so each part can be sourced
+# independently — e.g. the password from a Secret you manage.
+#
+# Each value is EITHER:
+#   - a plain string -> used directly as the env value, e.g.
+#       host: db.example.com
+#   - a map          -> rendered verbatim as the env var's source, e.g. to read
+#                       from a Secret you manage:
+#       password:
+#         valueFrom:
+#           secretKeyRef:
+#             name: airtrail-db
+#             key: password
 database:
-  # 1. Reference an existing Secret (nothing is templated; recommended for prod).
-  existingSecret: ""        # Secret name containing the connection URL
-  existingSecretKey: db-url  # key within that Secret
-
-  # 2. Full connection URL (chart stores it in a generated Secret).
-  url: ""                   # postgres://user:pass@host:5432/dbname
-
-  # 3. Individual components (used when url is empty).
-  host: ""
+  host: ""                  # required
   port: 5432
   name: airtrail
   username: airtrail
-  password: ""
+  password: ""              # required — string or secretKeyRef object
 
 # Optional init container that blocks app start until the database is reachable.
 waitForDb:

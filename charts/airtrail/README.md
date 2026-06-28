@@ -7,7 +7,6 @@ open-source personal flight tracking system.
 |---|---|
 | `Deployment` + `Service` | AirTrail app (`johly/airtrail`), port 3000 |
 | `PersistentVolumeClaim` | Uploads volume mounted at `/app/uploads` |
-| `Secret` | DB connection URL (only when not using an existing Secret) |
 | `Ingress` | routes the host to the app |
 
 No database is bundled — bring your own PostgreSQL (managed service, operator, or
@@ -30,30 +29,13 @@ The first account you register becomes the admin.
 
 ## Database
 
-Configure the connection in one of three ways (checked in this order):
+No database is bundled. AirTrail consumes a single `DB_URL`, which the chart
+assembles at runtime from the `database.*` components via Kubernetes `$(VAR)` env
+interpolation. Each component is **either** a plain string **or** a
+Kubernetes-native object rendered verbatim as the env var's source — so any part
+(typically the password) can come straight from a Secret you manage.
 
-**1. Existing Secret (recommended for production).** Nothing is templated — the
-chart reads the URL straight from a Secret you manage, so the password never
-appears in values or in Helm release state:
-
-```yaml
-database:
-  existingSecret: airtrail-db
-  existingSecretKey: db-url        # key holding postgres://user:pass@host:5432/db
-```
-
-```bash
-kubectl create secret generic airtrail-db \
-  --from-literal=db-url='postgres://airtrail:secret@db.example.com:5432/airtrail'
-```
-
-**2. Full URL inline** (chart stores it in a generated Secret):
-
-```bash
---set database.url='postgres://airtrail:secret@db.example.com:5432/airtrail'
-```
-
-**3. Individual components** (assembled into the URL, used when `url` is empty):
+Inline strings (simplest):
 
 ```yaml
 database:
@@ -63,6 +45,23 @@ database:
   username: airtrail
   password: secret                 # use A-Za-z0-9 only to avoid URL-parsing issues
 ```
+
+Pull the password (or any field) from an existing Secret:
+
+```yaml
+database:
+  host: db.example.com
+  name: airtrail
+  username: airtrail
+  password:
+    valueFrom:
+      secretKeyRef:
+        name: airtrail-db          # a Secret you manage
+        key: password
+```
+
+The chart never templates a Secret of its own, so inline string values land in the
+Deployment's env as-is — use the `valueFrom` object form for anything sensitive.
 
 A `wait-for-db` init container (`waitForDb.enabled`, default true) blocks rollout
 until the database is reachable; set `waitForDb.enabled=false` to skip it.

@@ -14,12 +14,7 @@ No ingress is enabled. Reach the app by port-forwarding:
   open http://localhost:3000
 {{- end }}
 
-{{- if .Values.database.existingSecret }}
-
-Database URL is read from Secret "{{ .Values.database.existingSecret }}" (key "{{ .Values.database.existingSecretKey | default "db-url" }}").
-{{- else }}
-
-Database URL is stored in Secret "{{ include "airtrail.secretName" . }}" (key "db-url").
-{{- end }}
+DB_URL is assembled from the database.* components at runtime. Values given as a
+`valueFrom` object (e.g. database.password) are pulled from the referenced Secret.
 
 The first account you register becomes the admin.

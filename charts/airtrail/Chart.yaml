@@ -1,0 +1,14 @@
+apiVersion: v2
+name: airtrail
+description: A modern, open-source personal flight tracking system.
+type: application
+version: 0.1.0
+appVersion: "3.8.1"
+home: https://airtrail.johan.ohly.dk
+sources:
+  - https://github.com/johanohly/AirTrail
+keywords:
+  - airtrail
+  - flights
+  - travel
+  - self-hosted

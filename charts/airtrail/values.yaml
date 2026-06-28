@@ -1,0 +1,74 @@
+# -- AirTrail application image.
+image:
+  repository: johly/airtrail
+  tag: ""              # defaults to .Chart.appVersion
+  pullPolicy: IfNotPresent
+imagePullSecrets: []
+
+nameOverride: ""
+fullnameOverride: ""
+
+replicas: 1
+
+# ORIGIN — the public URL AirTrail is served from. Required for the app to work
+# behind a proxy/ingress. Pass a comma-separated list to allow multiple origins.
+origin: https://airtrail.example.com
+
+resources:
+  requests: { cpu: 100m, memory: 256Mi }
+  limits: { memory: 512Mi }
+
+podAnnotations: {}
+podSecurityContext: {}
+securityContext: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+service:
+  type: ClusterIP
+  port: 3000
+
+# Persistent storage for user uploads (airline icons, etc.), mounted at
+# UPLOAD_LOCATION (/app/uploads). Disable to run with uploads turned off.
+persistence:
+  enabled: true
+  size: 1Gi
+  storageClass: ""
+  accessMode: ReadWriteOnce
+  existingClaim: ""     # use a pre-created PVC instead of provisioning one
+
+# PostgreSQL connection. No database is bundled — manage it externally.
+# Provide the connection in ONE of three ways (checked in this order):
+#   1. existingSecret  — reference a Secret you manage that holds the URL
+#   2. url             — a full connection URL set inline / via --set
+#   3. host/port/...   — individual components the chart assembles into a URL
+database:
+  # 1. Reference an existing Secret (nothing is templated; recommended for prod).
+  existingSecret: ""        # Secret name containing the connection URL
+  existingSecretKey: db-url  # key within that Secret
+
+  # 2. Full connection URL (chart stores it in a generated Secret).
+  url: ""                   # postgres://user:pass@host:5432/dbname
+
+  # 3. Individual components (used when url is empty).
+  host: ""
+  port: 5432
+  name: airtrail
+  username: airtrail
+  password: ""
+
+# Optional init container that blocks app start until the database is reachable.
+waitForDb:
+  enabled: true
+  image: postgres:16-alpine
+  pullPolicy: IfNotPresent
+
+ingress:
+  enabled: true
+  className: nginx
+  host: airtrail.example.com
+  annotations: {}
+  tls:
+    enabled: false
+    secretName: ""      # e.g. airtrail-tls (managed by cert-manager)

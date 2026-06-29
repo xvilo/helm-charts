@@ -2,6 +2,24 @@ apiVersion: v1
 entries:
   airtrail:
   - apiVersion: v2
+    appVersion: 3.11.1
+    created: "2026-06-29T14:36:06.105679811Z"
+    description: A modern, open-source personal flight tracking system.
+    digest: 3f7661f4aeab03dac7fe9f4daf10d20894864818db491734a250a3340afd5710
+    home: https://airtrail.johan.ohly.dk
+    keywords:
+    - airtrail
+    - flights
+    - travel
+    - self-hosted
+    name: airtrail
+    sources:
+    - https://github.com/johanohly/AirTrail
+    type: application
+    urls:
+    - https://github.com/xvilo/helm-charts/releases/download/airtrail-0.2.2/airtrail-0.2.2.tgz
+    version: 0.2.2
+  - apiVersion: v2
     appVersion: 3.10.0
     created: "2026-06-28T13:53:41.058944542Z"
     description: A modern, open-source personal flight tracking system.
@@ -801,4 +819,4 @@ entries:
     urls:
     - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.1.0/symfony-app-0.1.0.tgz
     version: 0.1.0
-generated: "2026-06-28T13:53:41.059157418Z"
+generated: "2026-06-29T14:36:06.105892858Z"

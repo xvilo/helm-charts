@@ -360,6 +360,20 @@ entries:
     - https://github.com/xvilo/helm-charts/releases/download/mastodon-0.1.0/mastodon-0.1.0.tgz
     version: 0.1.0
   stonker:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: security
+          description: "Updated app Version."
+    apiVersion: v2
+    appVersion: 0.2.0
+    created: "2026-08-24T10:17:20.978168904Z"
+    description: Self-hosted stocks & ETF portfolio tracker (Symfony API + React SPA)
+    digest: ed4bd463a76a62d94623663ad9b7d849a9cd955394eedd7163c83a71fd834c97
+    name: stonker
+    type: application
+    urls:
+    - https://github.com/xvilo/helm-charts/releases/download/stonker-0.1.1/stonker-0.1.1.tgz
+    version: 0.1.1
   - apiVersion: v2
     appVersion: 0.1.0
     created: "2026-06-21T16:48:52.303750537Z"
@@ -833,4 +847,4 @@ entries:
     urls:
     - https://github.com/xvilo/helm-charts/releases/download/symfony-app-0.1.0/symfony-app-0.1.0.tgz
     version: 0.1.0
-generated: "2026-07-12T16:02:32.671567868Z"
+generated: "2026-08-24T10:17:20.978378797Z"

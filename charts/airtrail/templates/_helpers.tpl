@@ -23,24 +23,45 @@ app.kubernetes.io/name: {{ include "airtrail.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
+{{/*
+Validate OAuth values: issuerURL, clientID and clientSecret are required when
+oauth.enabled is true.
+*/}}
+{{- define "airtrail.validateOauth" -}}
+{{- if .Values.oauth.enabled }}
+{{- if not (.Values.oauth.issuerURL) }}
+{{- fail "airtrail: oauth.issuerURL is required when oauth.enabled is true" }}
+{{- end }}
+{{- if not (.Values.oauth.clientID) }}
+{{- fail "airtrail: oauth.clientID is required when oauth.enabled is true" }}
+{{- end }}
+{{- if not (.Values.oauth.clientSecret) }}
+{{- fail "airtrail: oauth.clientSecret is required when oauth.enabled is true" }}
+{{- end }}
+{{- end }}
+{{- end -}}
+
 {{- define "airtrail.image" -}}
 {{- printf "%s:v%s" .Values.image.repository (.Values.image.tag | default .Chart.AppVersion) -}}
 {{- end -}}
 
 {{/*
 Render a name->value map as container `env:` entries. Each value may be:
-  - a scalar (string/number) -> rendered as `value: "..."`
+  - a scalar (string/number/bool) -> rendered as `value: "..."`
   - a map                    -> rendered as-is (e.g. `valueFrom: { secretKeyRef: {...} }`)
-Empty/nil scalar values are skipped. Expects the map as `.`.
+Empty/nil strings are skipped; booleans are always rendered so an explicit
+`false` reaches the app. Entries are emitted in alphabetical (env var name) order.
+Expects the map as `.`.
 */}}
 {{- define "airtrail.renderEnvMap" -}}
 {{- range $name, $value := . }}
+{{- if or (kindIs "map" $value) (kindIs "bool" $value) $value }}
+- name: {{ $name }}
 {{- if kindIs "map" $value }}
-- name: {{ $name }}
 {{ toYaml $value | indent 2 }}
-{{- else if $value }}
-- name: {{ $name }}
+{{- else }}
   value: {{ $value | quote }}
+{{- end }}
 {{- end }}
 {{- end }}
 {{- end -}}

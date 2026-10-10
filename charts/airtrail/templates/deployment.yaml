@@ -1,3 +1,4 @@
+{{- include "airtrail.validateOauth" . }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -71,6 +72,21 @@ spec:
             {{- if .Values.persistence.enabled }}
             - name: UPLOAD_LOCATION
               value: /app/uploads
+            {{- end }}
+            {{- if .Values.oauth.enabled }}
+            {{- include "airtrail.renderEnvMap" (dict
+              "OAUTH_ENABLED" .Values.oauth.enabled
+              "OAUTH_ISSUER_URL" .Values.oauth.issuerURL
+              "OAUTH_CLIENT_ID" .Values.oauth.clientID
+              "OAUTH_CLIENT_SECRET" .Values.oauth.clientSecret
+              "OAUTH_TOKEN_ENDPOINT_AUTH_METHOD" .Values.oauth.tokenEndpointAuthMethod
+              "OAUTH_SCOPE" .Values.oauth.scope
+              "OAUTH_PROMPT" .Values.oauth.prompt
+              "OAUTH_AUTO_REGISTER" .Values.oauth.autoRegister
+              "OAUTH_AUTO_LOGIN" .Values.oauth.autoLogin
+              "OAUTH_HIDE_PASSWORD_FORM" .Values.oauth.hidePasswordForm
+              "OAUTH_BUTTON_TEXT" .Values.oauth.buttonText
+            ) | nindent 12 }}
             {{- end }}
           {{- if .Values.persistence.enabled }}
           volumeMounts:

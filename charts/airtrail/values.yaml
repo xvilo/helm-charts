@@ -14,6 +14,35 @@ replicas: 1
 # behind a proxy/ingress. Pass a comma-separated list to allow multiple origins.
 origin: https://airtrail.example.com
 
+# OAuth (OIDC) authentication — https://airtrail.johan.ohly.dk/docs/features/oauth
+#
+# When enabled, non-empty values below are passed to the app as OAUTH_* env
+# vars; empty strings are skipped and AirTrail's own defaults apply. Booleans
+# are always passed.
+#
+# Each value is EITHER:
+#   - a plain string -> used directly as the env value, e.g.
+#       issuerURL: https://idp.example.com
+#   - a map          -> rendered verbatim as the env var's source, e.g. to read
+#                       the client secret from a Secret you manage:
+#       clientSecret:
+#         valueFrom:
+#           secretKeyRef:
+#             name: airtrail-oauth
+#             key: client-secret
+oauth:
+  enabled: false
+  issuerURL: ""                  # required when enabled, e.g. https://idp.example.com
+  clientID: ""                   # required when enabled
+  clientSecret: ""               # required when enabled — string or secretKeyRef object
+  tokenEndpointAuthMethod: ""    # client_secret_post (default) or client_secret_basic
+  scope: ""                      # space-separated, default: "openid profile"
+  prompt: ""                     # optional OIDC prompt: login, consent, select_account
+  autoRegister: true
+  autoLogin: false
+  hidePasswordForm: false
+  buttonText: ""
+
 resources:
   requests: { cpu: 100m, memory: 256Mi }
   limits: { memory: 512Mi }

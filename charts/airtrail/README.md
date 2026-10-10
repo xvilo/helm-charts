@@ -73,6 +73,32 @@ mounted at `UPLOAD_LOCATION=/app/uploads`. Disable with `persistence.enabled=fal
 (uploads are then turned off), or point at a pre-created claim with
 `persistence.existingClaim`.
 
+## OAuth (SSO)
+
+AirTrail can authenticate users via an external identity provider (OIDC).
+Register a confidential web application (Authorization Code grant) in your IdP
+with the app's `/login` route as redirect URI (e.g. `https://airtrail.example.com/login`),
+then:
+
+```yaml
+oauth:
+  enabled: true
+  issuerURL: https://idp.example.com
+  clientID: airtrail
+  clientSecret:
+    valueFrom:
+      secretKeyRef:
+        name: airtrail-oauth
+        key: client-secret
+```
+
+`issuerURL`, `clientID` and `clientSecret` are required when `enabled=true`
+keep the clientSecret in a Kubernetes secret, not in values.
+The optional settings (`tokenEndpointAuthMethod`, `scope`, `prompt`,
+`autoRegister`, `autoLogin`, `hidePasswordForm`, `buttonText`) are passed
+through as `OAUTH_*` env vars; empty values fall back to AirTrail's own
+defaults (see [the app docs](https://airtrail.johan.ohly.dk/docs/features/oauth)).
+
 ## TLS
 
 With [cert-manager](https://cert-manager.io) + nginx-ingress:
